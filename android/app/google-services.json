@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505200752835",
+    "firebase_url": "https://foodpromise-70eb2.firebaseio.com",
+    "project_id": "foodpromise-70eb2",
+    "storage_bucket": "foodpromise-70eb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505200752835:android:adfb5362ea4476e4a70a76",
+        "android_client_info": {
+          "package_name": "br.com.max.food_promise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505200752835-m52tqcjtd8050r1fn7045539s7laos8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTPuroA4ToQWThDufclFtpiQz8epG7zxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505200752835-m52tqcjtd8050r1fn7045539s7laos8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
