@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DarkTheme {
   static const primaryColor = Color(0xFF494A68);
@@ -9,7 +10,15 @@ class DarkTheme {
     primaryColor: primaryColor,
     brightness: Brightness.dark,
     canvasColor: secondaryColor,
+    fontFamily: GoogleFonts.openSans().fontFamily,
     indicatorColor: Colors.white,
+    buttonTheme: ButtonThemeData(
+      buttonColor: Colors.white,
+      textTheme: ButtonTextTheme.primary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+    ),
     accentColorBrightness: Brightness.dark,
     scaffoldBackgroundColor: secondaryColor,
     visualDensity: VisualDensity.adaptivePlatformDensity,

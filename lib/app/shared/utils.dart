@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class FoodPromiseUtils {
@@ -10,5 +11,9 @@ class FoodPromiseUtils {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
     final format = new DateFormat("dd/MM/y");
     return format.format(date);
+  }
+
+  static void hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }
