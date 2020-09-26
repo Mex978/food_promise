@@ -1,10 +1,10 @@
 import 'package:food_promise/app/shared/utils.dart';
 
-import '../enums.dart';
+import '../../../shared/enums.dart';
 
 class Promise {
   int quantity;
-  double createdAt;
+  int createdAt;
   bool performed;
   PromiseType promiseType;
   String destinyUserId;

@@ -1,35 +1,35 @@
 const PROMISSES = [
   {
     "quantity": 1,
-    "createdAt": 1601071169.0,
+    "createdAt": 1601071169,
     "performed": false,
     "promiseType": "BK",
     "destinyUserId": "Max Lima"
   },
   {
     "quantity": 1,
-    "createdAt": 1601071169.0,
+    "createdAt": 1601071169,
     "performed": false,
     "promiseType": "BK",
     "destinyUserId": "Max Lima"
   },
   {
     "quantity": 1,
-    "createdAt": 1601071169.0,
+    "createdAt": 1601071169,
     "performed": false,
     "promiseType": "BK",
     "destinyUserId": "Max Lima"
   },
   {
     "quantity": 1,
-    "createdAt": 1601071169.0,
+    "createdAt": 1601071169,
     "performed": false,
     "promiseType": "BK",
     "destinyUserId": "Max Lima"
   },
   {
     "quantity": 1,
-    "createdAt": 1601071169.0,
+    "createdAt": 1601071169,
     "performed": false,
     "promiseType": "BK",
     "destinyUserId": "Max Lima"

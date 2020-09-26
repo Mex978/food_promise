@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/shared/models/promise_model.dart';
 import 'package:food_promise/app/shared/utils.dart';
+
+import '../../../shared/utils.dart';
+import '../models/promise_model.dart';
 
 class PromiseItem extends StatelessWidget {
   final Promise promise;
+  final Function onPressed;
   final double kBorderRadius = 10;
 
-  const PromiseItem({Key key, this.promise}) : super(key: key);
+  const PromiseItem({Key key, this.promise, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,8 @@ class PromiseItem extends StatelessWidget {
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () {},
+          splashFactory: InkSplash.splashFactory,
+          onTap: onPressed,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -29,6 +33,14 @@ class PromiseItem extends StatelessWidget {
                 Text(
                   "Promised ${promise.quantity} ${FoodPromiseUtils.enumToString(promise.promiseType)}\nto ${promise.destinyUserId}",
                   textAlign: TextAlign.center,
+                ),
+                Spacer(),
+                Text(
+                  FoodPromiseUtils.timestampToHuman(promise.createdAt),
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
+                  ),
                 ),
                 Spacer(),
               ],

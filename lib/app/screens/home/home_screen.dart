@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
+import 'home_controller.dart';
 import 'widgets/home_body.dart';
 import 'widgets/home_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
+  final _controller = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +17,9 @@ class HomeScreen extends StatelessWidget {
       ),
       drawer: HomeDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _controller.makePromise();
+        },
         child: Icon(
           Icons.add,
           size: 32,
