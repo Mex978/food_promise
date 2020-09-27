@@ -79,6 +79,7 @@ class RegisterController extends GetxController {
         loading.value = false;
         return result;
       } else {
+        loading.value = false;
         errorDialog(
           'Error',
           'The passwords don\'t match',
@@ -105,6 +106,10 @@ class RegisterController extends GetxController {
       }
     } catch (e) {
       loading.value = false;
+      errorDialog(
+        'Error',
+        e.toString(),
+      );
       print(e.toString());
     }
     return false;

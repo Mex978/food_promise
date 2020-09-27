@@ -25,7 +25,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         return null;
       },
       controller: widget.controller.inputs[widget.index]["controller"],
-      obscureText: visible,
+      obscureText: isPassword ? !visible : false,
       focusNode: widget.controller.inputs[widget.index]["focusNode"],
       decoration: InputDecoration(
         hintText:
@@ -34,7 +34,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         labelText: widget.controller.inputs[widget.index]["label"],
         suffixIcon: isPassword
             ? FlatButton(
-                child: Text('SHOW'),
+                child: Text(visible ? 'UNSHOW' : 'SHOW'),
                 onPressed: () {
                   setState(() {
                     visible = !visible;

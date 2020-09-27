@@ -74,6 +74,10 @@ class LoginController extends GetxController {
       }
     } catch (e) {
       loading.value = false;
+      errorDialog(
+        'Error',
+        e.toString(),
+      );
       print(e.toString());
     }
     return false;
