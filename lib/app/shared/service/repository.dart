@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food_promise/app/screens/home/models/promise_model.dart';
-import 'package:food_promise/app/shared/service/mocked_data.dart';
 import 'package:meta/meta.dart';
 
 class Repository {
@@ -32,19 +31,11 @@ class Repository {
     }
   }
 
-  Future<bool> createUser({String uid, String name}) async {
+  Future<bool> createUser({String uid, String name, String email}) async {
     try {
-      client.collection('users').doc(uid).set({'name': name});
-      await client
-          .collection('users')
-          .doc('Max Lima')
-          .collection('promises')
-          .add({
-        "quantity": 1,
-        "createdAt": DateTime.now().millisecondsSinceEpoch,
-        "performed": false,
-        "promiseType": "BK",
-        "destinyUserId": "Max Lima"
+      client.collection('users').doc(uid).set({
+        'name': name,
+        'email': email,
       });
 
       return true;

@@ -73,7 +73,8 @@ class RegisterController extends GetxController {
         final uid = userCredential.user.uid;
 
         final repository = Get.find<Repository>();
-        final result = await repository.createUser(uid: uid, name: name);
+        final result =
+            await repository.createUser(uid: uid, name: name, email: email);
 
         loading.value = false;
         return result;
