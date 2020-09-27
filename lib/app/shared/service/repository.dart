@@ -8,24 +8,17 @@ class Repository {
 
   Repository({@required this.client});
 
-  Future<List<Promise>> getPromises() async {
-    final myPromises = await client
-        .collection('users')
-        .doc('Max Lima')
-        .collection('promises')
-        .get();
+  Future<List<Promise>> getPromises(String uid) async {
+    final myPromises =
+        await client.collection('users').doc(uid).collection('promises').get();
 
     return myPromises.docs?.map((p) => Promise.fromJson(p.data()))?.toList() ??
         [];
   }
 
-  Future<bool> createPromise() async {
+  Future<bool> createPromise(String uid) async {
     try {
-      await client
-          .collection('users')
-          .doc('Max Lima')
-          .collection('promises')
-          .add({
+      await client.collection('users').doc(uid).collection('promises').add({
         "quantity": 1,
         "createdAt": DateTime.now().millisecondsSinceEpoch,
         "performed": false,

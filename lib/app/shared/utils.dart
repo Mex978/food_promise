@@ -16,4 +16,18 @@ class FoodPromiseUtils {
   static void hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
+
+  static String getInitials(String str) {
+    if (str == null || str.isEmpty) return null;
+
+    String finalResult = '';
+    final aux = str.trim().split(' ');
+    final listStr = [aux.first];
+    if (aux.first != aux.last) listStr.add(aux.last);
+
+    for (var item in listStr) {
+      finalResult += item[0];
+    }
+    return finalResult;
+  }
 }
