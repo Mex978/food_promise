@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/login/login_controller.dart';
-import 'package:food_promise/app/screens/login/widgets/sign_in_button_widget.dart';
-import 'package:food_promise/app/screens/login/widgets/text_field_widget.dart';
+import 'package:food_promise/app/screens/register/register_controller.dart';
+import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 import 'package:get/get.dart';
 
+import 'widgets/sign_up_button_widget.dart';
+
 class RegisterScreen extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _controller = Get.put(LoginController());
+  final controller = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Form(
-                    key: _formKey,
+                    key: controller.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -33,16 +33,28 @@ class RegisterScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        _divider(context, 6),
-                        LoginTextField(index: 0),
+                        _divider(context, 4),
+                        CustomTextField(
+                          index: 0,
+                          controller: controller,
+                        ),
                         _divider(context, 2),
-                        LoginTextField(index: 1),
-                        _divider(context, 6),
-                        SignInButton(),
-                        _divider(context, 1),
-                        SignInButton(),
-                        _divider(context, 1),
-                        SignInButton(),
+                        CustomTextField(
+                          index: 1,
+                          controller: controller,
+                        ),
+                        _divider(context, 2),
+                        CustomTextField(
+                          index: 2,
+                          controller: controller,
+                        ),
+                        _divider(context, 2),
+                        CustomTextField(
+                          index: 3,
+                          controller: controller,
+                        ),
+                        _divider(context, 4),
+                        SignUpButton(controller: controller),
                         // SignUpButton(),
                       ],
                     ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:food_promise/app/app_controller.dart';
 import 'package:food_promise/app/screens/home/home_screen.dart';
 import 'package:food_promise/app/shared/utils.dart';
+import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
 import 'package:food_promise/app/themes/dark_theme.dart';
 import 'package:get/get.dart';
 
@@ -24,14 +25,19 @@ class FoodPromise extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          final _controller = Get.put(FoodPromiseController());
+          final controller = Get.put(FoodPromiseController());
 
           return GestureDetector(
             onTap: () => FoodPromiseUtils.hideKeyboard(context),
             child: GetMaterialApp(
               title: 'Food Promise',
               theme: DarkTheme.theme,
-              home: LoginScreen(),
+              home: Obx(() {
+                if (controller.isLogged.value)
+                  return HomeScreen();
+                else
+                  return LoginScreen();
+              }),
             ),
           );
         }

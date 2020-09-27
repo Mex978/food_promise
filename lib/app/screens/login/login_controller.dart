@@ -2,9 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_promise/app/screens/home/home_screen.dart';
+import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
+  final loading = false.obs;
+  GlobalKey<FormState> formKey;
   TextEditingController textEditingControllerUser;
   TextEditingController textEditingControllerPass;
 
@@ -23,6 +26,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    formKey = GlobalKey<FormState>();
+
     textEditingControllerUser = TextEditingController();
     inputs[0]["controller"] = textEditingControllerUser;
 
@@ -32,61 +37,66 @@ class LoginController extends GetxController {
   }
 
   Future<bool> _signInFunction() async {
+    loading.value = true;
     final auth = Get.find<FirebaseAuth>();
 
     final email = textEditingControllerUser.text;
     final password = textEditingControllerPass.text;
 
     try {
-      print(email);
-      print(password);
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      print('USER CREDENTIALS: $userCredential');
+      await auth.signInWithEmailAndPassword(email: email, password: password);
+      loading.value = false;
       return true;
     } on FirebaseAuthException catch (e) {
+      loading.value = false;
       if (e.code == 'weak-password') {
-        Get.snackbar(
+        errorDialog(
           'Error',
           'The password provided is too weak.',
-          backgroundColor: Colors.red[600],
         );
       } else if (e.code == 'email-already-in-use') {
-        Get.snackbar(
+        errorDialog(
           'Error',
           'The account already exists for that email.',
-          backgroundColor: Colors.red[600],
         );
       } else if (e.code == 'invalid-email') {
-        Get.snackbar(
+        errorDialog(
           'Error',
           'The email provided is invalid',
-          backgroundColor: Colors.red[600],
+        );
+      } else if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+        errorDialog(
+          'Error',
+          'The email or password are wrong',
         );
       } else {
         print(e.toString());
       }
     } catch (e) {
+      loading.value = false;
       print(e.toString());
     }
     return false;
   }
 
-  onSignInPressed() async {
+  _onSignInPressed() async {
     final success = await _signInFunction();
 
     if (success) {
-      Get.delete<LoginController>();
-      Get.back();
-      Get.to(HomeScreen());
+      Get.off(HomeScreen()).then((value) => Get.delete<LoginController>());
       print("Sign in success");
     } else {
       print("Sign in failed");
     }
   }
 
+  mainFunction() {
+    if (formKey.currentState.validate()) _onSignInPressed();
+  }
+
   @override
   void onClose() {
+    print('--> on close login controller <--');
     textEditingControllerUser?.dispose();
     textEditingControllerPass?.dispose();
     super.onClose();

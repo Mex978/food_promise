@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:food_promise/app/screens/login/login_controller.dart';
 import 'package:food_promise/app/screens/login/widgets/sign_in_button_widget.dart';
-import 'package:food_promise/app/screens/login/widgets/sign_up_with_google_button_widget%20copy.dart';
-import 'package:food_promise/app/screens/login/widgets/text_field_widget.dart';
+import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 import 'package:get/get.dart';
 
-import 'widgets/sign_in_with_google_button_widget.dart';
 import 'widgets/sing_up_button_widget.dart';
 
 class LoginScreen extends StatelessWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _controller = Get.put(LoginController());
+  final controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,7 @@ class LoginScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
                   child: Form(
-                    key: _formKey,
+                    key: controller.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -38,11 +35,17 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         _divider(context, 3),
-                        LoginTextField(index: 0),
+                        CustomTextField(
+                          index: 0,
+                          controller: controller,
+                        ),
                         _divider(context, 2),
-                        LoginTextField(index: 1),
+                        CustomTextField(
+                          index: 1,
+                          controller: controller,
+                        ),
                         _divider(context, 3),
-                        SignInButton(),
+                        SignInButton(controller: controller),
                         // _divider(context, 1),
                         // SignInWithGoogleButton(),
                         _divider(context, 1),

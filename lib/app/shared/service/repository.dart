@@ -38,4 +38,25 @@ class Repository {
       return false;
     }
   }
+
+  Future<bool> createUser({String uid, String name}) async {
+    try {
+      client.collection('users').doc(uid).set({'name': name});
+      await client
+          .collection('users')
+          .doc('Max Lima')
+          .collection('promises')
+          .add({
+        "quantity": 1,
+        "createdAt": DateTime.now().millisecondsSinceEpoch,
+        "performed": false,
+        "promiseType": "BK",
+        "destinyUserId": "Max Lima"
+      });
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_promise/app/screens/home/home_controller.dart';
+import 'package:get/get.dart';
 
 class HomeDrawer extends StatelessWidget {
+  final controller = Get.find<HomeController>();
   final options = List.generate(5, (index) => "Option ${index + 1}");
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           DrawerHeader(
             child: Column(
@@ -41,10 +44,20 @@ class HomeDrawer extends StatelessWidget {
               color: Theme.of(context).primaryColor,
             ),
           ),
-        ]..addAll(options.map((option) => ListTile(
-              onTap: () {},
-              title: Text(option),
-            ))),
+        ]
+          ..addAll(options.map((option) => ListTile(
+                onTap: () {},
+                title: Text(option),
+              )))
+          ..add(Spacer())
+          ..add(ListTile(
+            leading: Icon(Icons.close, color: Colors.red),
+            title: Text(
+              'Sign Out',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+            ),
+            onTap: () => controller.signOut(),
+          )),
       ),
     );
   }
