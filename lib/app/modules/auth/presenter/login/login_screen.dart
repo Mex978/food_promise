@@ -5,8 +5,23 @@ import 'package:food_promise/app/modules/auth/presenter/widgets/sign_in_button_w
 import 'package:food_promise/app/modules/auth/presenter/widgets/sing_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  final controller = Modular.get<LoginController>();
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
+  @override
+  void initState() {
+    super.initState();
+    controller.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.close();
+  }
 
   @override
   Widget build(BuildContext context) {

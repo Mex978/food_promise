@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/app_controller.dart';
 import 'package:food_promise/app/shared/utils.dart';
 import 'package:food_promise/app/themes/dark_theme.dart';
+import 'package:asuka/asuka.dart' as asuka;
 
 class FoodPromise extends StatefulWidget {
   @override
@@ -47,6 +48,7 @@ class _FoodPromiseState extends State<FoodPromise> {
         return GestureDetector(
           onTap: () => FoodPromiseUtils.hideKeyboard(context),
           child: MaterialApp(
+            builder: asuka.builder,
             title: 'Food Promise',
             theme: DarkTheme.theme,
             initialRoute: Modular.initialRoute,

@@ -4,8 +4,24 @@ import 'package:food_promise/app/modules/auth/presenter/register/register_contro
 import 'package:food_promise/app/modules/auth/presenter/widgets/sign_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 
-class RegisterScreen extends StatelessWidget {
-  final controller = Modular.get<RegisterController>();
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState
+    extends ModularState<RegisterScreen, RegisterController> {
+  @override
+  void initState() {
+    super.initState();
+    controller.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.close();
+  }
 
   @override
   Widget build(BuildContext context) {

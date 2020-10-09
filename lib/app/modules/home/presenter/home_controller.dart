@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
 
-import 'package:food_promise/app/modules/auth/presenter/login/login_screen.dart';
 import 'package:food_promise/app/modules/home/models/user_model.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   final loading = false.obs;
   final user = User().obs;
-  final Repository _repository = Get.find();
-  final FirebaseAuth _auth = Get.find();
+  final _repository = Modular.get<Repository>();
+  final _auth = Modular.get<FirebaseAuth>();
 
   final promises = <Promise>[].obs;
 
@@ -61,7 +61,7 @@ class HomeController extends GetxController {
   }
 
   signOut() async {
-    final auth = Get.find<FirebaseAuth>();
-    auth.signOut().then((value) => Get.offAll(LoginScreen()));
+    final auth = Modular.get<FirebaseAuth>();
+    auth.signOut().then((value) => Modular.to.pushNamed('/auth'));
   }
 }

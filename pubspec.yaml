@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   get:
+  asuka:
   intl:
   flutter_modular:
   cached_network_image: ^2.3.2+1

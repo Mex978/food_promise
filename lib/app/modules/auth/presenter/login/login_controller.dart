@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/modules/home/presenter/home_screen.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
 
@@ -24,8 +24,8 @@ class LoginController extends GetxController {
     },
   ];
 
-  @override
-  void onInit() {
+  init() {
+    print('--> on init login controller <--');
     formKey = GlobalKey<FormState>();
 
     textEditingControllerUser = TextEditingController();
@@ -33,12 +33,11 @@ class LoginController extends GetxController {
 
     textEditingControllerPass = TextEditingController();
     inputs[1]["controller"] = textEditingControllerPass;
-    super.onInit();
   }
 
   Future<bool> _signInFunction() async {
     loading.value = true;
-    final auth = Get.find<FirebaseAuth>();
+    final auth = Modular.get<FirebaseAuth>();
 
     final email = textEditingControllerUser.text;
     final password = textEditingControllerPass.text;
@@ -83,26 +82,24 @@ class LoginController extends GetxController {
     return false;
   }
 
-  _onSignInPressed() async {
+  void _onSignInPressed() async {
     final success = await _signInFunction();
 
     if (success) {
-      Get.off(HomeScreen()).then((value) => Get.delete<LoginController>());
+      Modular.to.pushReplacementNamed('/home');
       print("Sign in success");
     } else {
       print("Sign in failed");
     }
   }
 
-  mainFunction() {
+  void mainFunction() {
     if (formKey.currentState.validate()) _onSignInPressed();
   }
 
-  @override
-  void onClose() {
+  void close() {
     print('--> on close login controller <--');
     textEditingControllerUser?.dispose();
     textEditingControllerPass?.dispose();
-    super.onClose();
   }
 }

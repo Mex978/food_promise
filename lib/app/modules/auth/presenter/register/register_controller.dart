@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/presenter/home_screen.dart';
 import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
@@ -38,8 +39,7 @@ class RegisterController extends GetxController {
     },
   ];
 
-  @override
-  void onInit() {
+  void init() {
     formKey = GlobalKey<FormState>();
 
     textEditingControllerName = TextEditingController();
@@ -53,12 +53,11 @@ class RegisterController extends GetxController {
 
     textEditingControllerRePass = TextEditingController();
     inputs[3]["controller"] = textEditingControllerRePass;
-    super.onInit();
   }
 
   Future<bool> _signUpFunction() async {
     loading.value = true;
-    final auth = Get.find<FirebaseAuth>();
+    final auth = Modular.get<FirebaseAuth>();
 
     final name = textEditingControllerName.text;
     final email = textEditingControllerEmail.text;
@@ -71,7 +70,7 @@ class RegisterController extends GetxController {
             .createUserWithEmailAndPassword(email: email, password: password);
         final uid = userCredential.user.uid;
 
-        final repository = Get.find<Repository>();
+        final repository = Modular.get<Repository>();
         final result =
             await repository.createUser(uid: uid, name: name, email: email);
 
@@ -130,12 +129,10 @@ class RegisterController extends GetxController {
     if (formKey.currentState.validate()) _onSignUpPressed();
   }
 
-  @override
-  void onClose() {
+  void close() {
     print('--> on close register controller <--');
     textEditingControllerEmail?.dispose();
     textEditingControllerPass?.dispose();
     textEditingControllerRePass?.dispose();
-    super.onClose();
   }
 }
