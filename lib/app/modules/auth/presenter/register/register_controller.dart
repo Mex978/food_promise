@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/home/presenter/home_screen.dart';
-import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
@@ -78,36 +76,42 @@ class RegisterController extends GetxController {
         return result;
       } else {
         loading.value = false;
-        errorDialog(
-          'Error',
-          'The passwords don\'t match',
-        );
+        // errorDialog(
+        //   'Error',
+        //   'The passwords don\'t match',
+        // );
+        foodPromiseDialog('Error', 'The passwords don\'t match', false);
       }
     } on FirebaseAuthException catch (e) {
       print("ERRO SIGN UP ==> ${e.toString()}");
       loading.value = false;
       if (e.code == 'weak-password') {
-        errorDialog(
-          'Error',
-          'The password provided is too weak.',
-        );
+        // errorDialog(
+        // //   'Error',
+        // //   'The password provided is too weak.',
+        // // );
+        foodPromiseDialog('Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        errorDialog(
-          'Error',
-          'The account already exists for that email.',
-        );
+        // errorDialog(
+        //   'Error',
+        //   'The account already exists for that email.',
+        // );
+        foodPromiseDialog(
+            'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
         errorDialog(
           'Error',
           'The email provided is invalid',
         );
+        foodPromiseDialog('Error', 'The email provided is invalid', false);
       }
     } catch (e) {
       loading.value = false;
-      errorDialog(
-        'Error',
-        e.toString(),
-      );
+      // errorDialog(
+      //   'Error',
+      //   e.toString(),
+      // );
+      foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
     return false;
@@ -117,8 +121,7 @@ class RegisterController extends GetxController {
     final success = await _signUpFunction();
 
     if (success) {
-      Get.offAll(HomeScreen()).then((_) => Get.delete<RegisterController>()
-          .then((_) => Get.delete<LoginController>()));
+      Modular.to.pushReplacementNamed('/home');
       print("Sign Up");
     } else {
       print('Sign up failed');
