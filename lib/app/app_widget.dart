@@ -20,12 +20,11 @@ class _FoodPromiseState extends State<FoodPromise> {
     super.initState();
 
     _subscription = controller.isLogged.listen((value) {
+      _subscription.cancel();
       if (value) {
-        _subscription.cancel();
         Modular.link.pushNamed('/home');
       } else {
-        _subscription.cancel();
-        Modular.link.pushNamed('/login');
+        Modular.to.pushNamed('/login');
       }
     });
   }
@@ -43,18 +42,18 @@ class _FoodPromiseState extends State<FoodPromise> {
 
         if (snapshot.connectionState == ConnectionState.done) {
           controller.chekIsLogged();
-
-          return GestureDetector(
-            onTap: () => FoodPromiseUtils.hideKeyboard(context),
-            child: MaterialApp(
-              title: 'Food Promise',
-              theme: DarkTheme.theme,
-              initialRoute: Modular.initialRoute,
-              navigatorKey: Modular.navigatorKey,
-            ),
-          );
         }
-        return CircularProgressIndicator();
+
+        return GestureDetector(
+          onTap: () => FoodPromiseUtils.hideKeyboard(context),
+          child: MaterialApp(
+            title: 'Food Promise',
+            theme: DarkTheme.theme,
+            initialRoute: Modular.initialRoute,
+            navigatorKey: Modular.navigatorKey,
+            onGenerateRoute: Modular.generateRoute,
+          ),
+        );
       },
     );
   }

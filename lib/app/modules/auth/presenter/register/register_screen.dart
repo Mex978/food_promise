@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/login/login_controller.dart';
-import 'package:food_promise/app/screens/login/widgets/sign_in_button_widget.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/auth/presenter/register/register_controller.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sign_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
-import 'package:get/get.dart';
 
-import 'widgets/sing_up_button_widget.dart';
-
-class LoginScreen extends StatelessWidget {
-  final controller = Get.put(LoginController());
+class RegisterScreen extends StatelessWidget {
+  final controller = Modular.get<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        _divider(context, 3),
+                        _divider(context, 4),
                         CustomTextField(
                           index: 0,
                           controller: controller,
@@ -44,14 +42,18 @@ class LoginScreen extends StatelessWidget {
                           index: 1,
                           controller: controller,
                         ),
-                        _divider(context, 3),
-                        SignInButton(controller: controller),
-                        // _divider(context, 1),
-                        // SignInWithGoogleButton(),
-                        _divider(context, 1),
-                        SignUpButton(),
-                        // _divider(context, 1),
-                        // SignUpWithGoogleButton(),
+                        _divider(context, 2),
+                        CustomTextField(
+                          index: 2,
+                          controller: controller,
+                        ),
+                        _divider(context, 2),
+                        CustomTextField(
+                          index: 3,
+                          controller: controller,
+                        ),
+                        _divider(context, 4),
+                        SignUpButton(controller: controller),
                         // SignUpButton(),
                       ],
                     ),

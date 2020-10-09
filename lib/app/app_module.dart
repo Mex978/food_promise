@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/auth/auth_module.dart';
+import 'package:food_promise/app/modules/home/home_module.dart';
 
 import 'app_controller.dart';
 import 'app_widget.dart';
-import 'screens/home/home_screen.dart';
-import 'screens/login/login_screen.dart';
 import 'shared/service/repository.dart';
 
 class AppModule extends MainModule {
@@ -25,15 +25,19 @@ class AppModule extends MainModule {
   List<ModularRouter> get routers => [
         ModularRouter(
           '/',
-          child: (context, args) => CircularProgressIndicator(),
+          child: (context, args) => Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
         ),
         ModularRouter(
           '/login',
-          child: (context, args) => LoginScreen(),
+          module: AuthModule(),
         ),
         ModularRouter(
           '/home',
-          child: (context, args) => HomeScreen(),
+          module: HomeModule(),
         ),
       ];
 }

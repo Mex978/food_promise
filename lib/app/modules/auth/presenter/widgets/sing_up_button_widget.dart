@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/register/register_controller.dart';
-import 'package:food_promise/app/screens/register/register_screen.dart';
-import 'package:get/get.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SignUpButton extends StatelessWidget {
   @override
@@ -9,8 +7,7 @@ class SignUpButton extends StatelessWidget {
     return Container(
       height: 48,
       child: RaisedButton(
-        onPressed: () => Get.to(RegisterScreen())
-            .then((value) => Get.delete<RegisterController>()),
+        onPressed: () => Modular.link.pushNamed('/register'),
         child: Text(
           'SIGN UP',
           style: TextStyle(fontWeight: FontWeight.w600),

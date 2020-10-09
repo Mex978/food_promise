@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
 import 'package:get/get.dart';
 import '../../../shared/widgets/simple_loader_widget.dart';
 
-import '../home_controller.dart';
 import 'promise_item_widget.dart';
 
 class HomeBody extends StatelessWidget {
-  final _controller = Get.find<HomeController>();
+  final _controller = Modular.get<HomeController>();
 
   @override
   Widget build(BuildContext context) {

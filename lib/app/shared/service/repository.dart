@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food_promise/app/screens/home/models/promise_model.dart';
+import 'package:food_promise/app/modules/home/models/promise_model.dart';
 import 'package:meta/meta.dart';
 
 class Repository {

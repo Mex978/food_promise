@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/register/register_controller.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sign_in_button_widget.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sing_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
-import 'package:get/get.dart';
 
-import 'widgets/sign_up_button_widget.dart';
-
-class RegisterScreen extends StatelessWidget {
-  final controller = Get.put(RegisterController());
+class LoginScreen extends StatelessWidget {
+  final controller = Modular.get<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class RegisterScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        _divider(context, 4),
+                        _divider(context, 3),
                         CustomTextField(
                           index: 0,
                           controller: controller,
@@ -43,18 +43,14 @@ class RegisterScreen extends StatelessWidget {
                           index: 1,
                           controller: controller,
                         ),
-                        _divider(context, 2),
-                        CustomTextField(
-                          index: 2,
-                          controller: controller,
-                        ),
-                        _divider(context, 2),
-                        CustomTextField(
-                          index: 3,
-                          controller: controller,
-                        ),
-                        _divider(context, 4),
-                        SignUpButton(controller: controller),
+                        _divider(context, 3),
+                        SignInButton(controller: controller),
+                        // _divider(context, 1),
+                        // SignInWithGoogleButton(),
+                        _divider(context, 1),
+                        SignUpButton(),
+                        // _divider(context, 1),
+                        // SignUpWithGoogleButton(),
                         // SignUpButton(),
                       ],
                     ),
