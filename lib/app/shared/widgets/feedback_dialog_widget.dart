@@ -28,23 +28,51 @@ successDialog(String title, String message) {
 }
 
 void foodPromiseDialog(String title, String message, bool sucess) {
-  final titleStyle = GoogleFonts.openSansCondensed(
-    height: 18,
-  );
+  final titleStyle = GoogleFonts.openSans(
+      textStyle: TextStyle(
+          fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18));
+
   final messageStyle = GoogleFonts.openSans(
-    height: 16,
-  );
+      textStyle: TextStyle(color: Colors.white, fontSize: 16));
 
   asuka.showSnackBar(SnackBar(
-    content: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+    behavior: SnackBarBehavior.floating,
+    content: Row(
+      mainAxisSize: MainAxisSize.max,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
-          child: Text(title, style: titleStyle),
+        sucess
+            ? Icon(
+                Icons.check,
+                color: Colors.white,
+              )
+            : Icon(
+                Icons.close,
+                color: Colors.white,
+              ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4.0),
+                  child: Text(
+                    '$title',
+                    style: titleStyle,
+                  ),
+                ),
+                Text(
+                  '$message',
+                  style: messageStyle,
+                  softWrap: true,
+                ),
+              ],
+            ),
+          ),
         ),
-        Text(message, style: messageStyle),
       ],
     ),
     backgroundColor: sucess ? Colors.green[600] : Colors.red[600],
