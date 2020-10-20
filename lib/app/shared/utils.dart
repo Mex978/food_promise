@@ -9,7 +9,7 @@ class FoodPromiseUtils {
 
   static String timestampToHuman(int timestamp) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    final format = new DateFormat("dd/MM/y");
+    final format = new DateFormat('dd/MM/y');
     return format.format(date);
   }
 

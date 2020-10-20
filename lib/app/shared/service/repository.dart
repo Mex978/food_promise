@@ -18,11 +18,11 @@ class Repository {
   Future<bool> createPromise(String uid) async {
     try {
       await client.collection('users').doc(uid).collection('promises').add({
-        "quantity": 1,
-        "createdAt": DateTime.now().millisecondsSinceEpoch,
-        "performed": false,
-        "promiseType": "BK",
-        "destinyUserId": "Max Lima"
+        'quantity': 1,
+        'createdAt': DateTime.now().millisecondsSinceEpoch,
+        'performed': false,
+        'promiseType': 'BK',
+        'destinyUserId': 'Max Lima'
       });
 
       return true;

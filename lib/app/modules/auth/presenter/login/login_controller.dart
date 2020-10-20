@@ -13,14 +13,14 @@ class LoginController extends GetxController {
 
   final List<dynamic> inputs = [
     {
-      "label": "E-mail",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'E-mail',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
   ];
 
@@ -29,10 +29,10 @@ class LoginController extends GetxController {
     formKey = GlobalKey<FormState>();
 
     textEditingControllerUser = TextEditingController();
-    inputs[0]["controller"] = textEditingControllerUser;
+    inputs[0]['controller'] = textEditingControllerUser;
 
     textEditingControllerPass = TextEditingController();
-    inputs[1]["controller"] = textEditingControllerPass;
+    inputs[1]['controller'] = textEditingControllerPass;
   }
 
   Future<bool> _signInFunction() async {
@@ -93,9 +93,9 @@ class LoginController extends GetxController {
 
     if (success) {
       Modular.to.pushReplacementNamed('/home');
-      print("Sign in success");
+      print('Sign in success');
     } else {
-      print("Sign in failed");
+      print('Sign in failed');
     }
   }
 

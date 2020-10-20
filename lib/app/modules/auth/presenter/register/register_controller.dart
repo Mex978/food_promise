@@ -16,24 +16,24 @@ class RegisterController extends GetxController {
 
   final List<dynamic> inputs = [
     {
-      "label": "Name",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'Name',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "E-mail",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'E-mail',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Re-Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Re-Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
   ];
 
@@ -41,16 +41,16 @@ class RegisterController extends GetxController {
     formKey = GlobalKey<FormState>();
 
     textEditingControllerName = TextEditingController();
-    inputs[0]["controller"] = textEditingControllerName;
+    inputs[0]['controller'] = textEditingControllerName;
 
     textEditingControllerEmail = TextEditingController();
-    inputs[1]["controller"] = textEditingControllerEmail;
+    inputs[1]['controller'] = textEditingControllerEmail;
 
     textEditingControllerPass = TextEditingController();
-    inputs[2]["controller"] = textEditingControllerPass;
+    inputs[2]['controller'] = textEditingControllerPass;
 
     textEditingControllerRePass = TextEditingController();
-    inputs[3]["controller"] = textEditingControllerRePass;
+    inputs[3]['controller'] = textEditingControllerRePass;
   }
 
   Future<bool> _signUpFunction() async {
@@ -83,7 +83,7 @@ class RegisterController extends GetxController {
         foodPromiseDialog('Error', 'The passwords don\'t match', false);
       }
     } on FirebaseAuthException catch (e) {
-      print("ERRO SIGN UP ==> ${e.toString()}");
+      print('ERRO SIGN UP ==> ${e.toString()}');
       loading.value = false;
       if (e.code == 'weak-password') {
         // errorDialog(
@@ -122,7 +122,7 @@ class RegisterController extends GetxController {
 
     if (success) {
       Modular.to.pushReplacementNamed('/home');
-      print("Sign Up");
+      print('Sign Up');
     } else {
       print('Sign up failed');
     }

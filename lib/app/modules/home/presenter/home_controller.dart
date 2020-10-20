@@ -52,13 +52,13 @@ class HomeController extends GetxController {
 
     if (success)
       successDialog(
-        "Success",
-        "Promise created with success!",
+        'Success',
+        'Promise created with success!',
       );
     else
       errorDialog(
-        "Error",
-        "Some error ocurred :(",
+        'Error',
+        'Some error ocurred :(',
       );
   }
 

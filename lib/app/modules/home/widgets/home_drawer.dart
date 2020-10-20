@@ -67,7 +67,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             onTap: () => Get.to(ContactsScreen()),
             leading: Icon(Icons.people),
-            title: Text("Contacts"),
+            title: Text('Contacts'),
           )
         ]
           ..add(Spacer())
