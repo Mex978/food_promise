@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
 import 'package:get/get.dart';
 import '../../../shared/widgets/simple_loader_widget.dart';
 
-import '../home_controller.dart';
 import 'promise_item_widget.dart';
 
 class HomeBody extends StatelessWidget {
-  final _controller = Get.find<HomeController>();
+  final _controller = Modular.get<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => _controller.loadPromises(),
       child: Obx(() {
+        print(_controller.loading.value);
         if (_controller.loading.value) return SimpleLoader();
 
-        if (_controller.promises.isEmpty)
+        if (_controller.promises.isEmpty) {
           return Stack(
             children: <Widget>[
               ListView(),
@@ -33,6 +35,7 @@ class HomeBody extends StatelessWidget {
               )
             ],
           );
+        }
 
         return GridView.count(
           padding: EdgeInsets.all(16),

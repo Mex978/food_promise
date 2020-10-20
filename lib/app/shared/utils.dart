@@ -8,8 +8,8 @@ class FoodPromiseUtils {
       values.firstWhere((v) => key == enumToString(v), orElse: () => null);
 
   static String timestampToHuman(int timestamp) {
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    final format = new DateFormat("dd/MM/y");
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    final format = DateFormat('dd/MM/y');
     return format.format(date);
   }
 
@@ -20,7 +20,7 @@ class FoodPromiseUtils {
   static String getInitials(String str) {
     if (str == null || str.isEmpty) return null;
 
-    String finalResult = '';
+    var finalResult = '';
     final aux = str.trim().split(' ');
     final listStr = [aux.first];
     if (aux.first != aux.last) listStr.add(aux.last);

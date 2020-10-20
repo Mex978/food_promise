@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/register/register_controller.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/auth/presenter/register/register_controller.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sign_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
-import 'package:get/get.dart';
 
-import 'widgets/sign_up_button_widget.dart';
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
 
-class RegisterScreen extends StatelessWidget {
-  final controller = Get.put(RegisterController());
+class _RegisterScreenState
+    extends ModularState<RegisterScreen, RegisterController> {
+  @override
+  void initState() {
+    super.initState();
+    controller.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +83,7 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  _divider(BuildContext context, double factor) => Divider(
+  Widget _divider(BuildContext context, double factor) => Divider(
       height: (MediaQuery.of(context).size.height * 0.02) * factor,
       color: Colors.transparent);
 }

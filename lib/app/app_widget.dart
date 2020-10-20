@@ -1,18 +1,36 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
+import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/app_controller.dart';
-import 'package:food_promise/app/screens/home/home_screen.dart';
 import 'package:food_promise/app/shared/utils.dart';
-import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
 import 'package:food_promise/app/themes/dark_theme.dart';
-import 'package:get/get.dart';
 
-import 'screens/login/login_screen.dart';
-import 'shared/service/repository.dart';
+class FoodPromise extends StatefulWidget {
+  @override
+  _FoodPromiseState createState() => _FoodPromiseState();
+}
 
-class FoodPromise extends StatelessWidget {
+class _FoodPromiseState extends State<FoodPromise> {
+  final controller = Modular.get<FoodPromiseController>();
+  StreamSubscription _subscription;
+  @override
+  void initState() {
+    super.initState();
+
+    _subscription = controller.isLogged.listen((value) {
+      _subscription.cancel();
+
+      if (value) {
+        Modular.to.pushReplacementNamed('/home');
+      } else {
+        Modular.to.pushReplacementNamed('/login');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -25,23 +43,20 @@ class FoodPromise extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          final controller = Get.put(FoodPromiseController());
-
-          return GestureDetector(
-            onTap: () => FoodPromiseUtils.hideKeyboard(context),
-            child: GetMaterialApp(
-              title: 'Food Promise',
-              theme: DarkTheme.theme,
-              home: Obx(() {
-                if (controller.isLogged.value)
-                  return HomeScreen();
-                else
-                  return LoginScreen();
-              }),
-            ),
-          );
+          controller.chekIsLogged();
         }
-        return CircularProgressIndicator();
+
+        return GestureDetector(
+          onTap: () => FoodPromiseUtils.hideKeyboard(context),
+          child: MaterialApp(
+            builder: asuka.builder,
+            title: 'Food Promise',
+            theme: DarkTheme.theme,
+            initialRoute: Modular.initialRoute,
+            navigatorKey: Modular.navigatorKey,
+            onGenerateRoute: Modular.generateRoute,
+          ),
+        );
       },
     );
   }

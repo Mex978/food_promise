@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/screens/contacts/contacts_screen.dart';
-import 'package:food_promise/app/screens/home/home_controller.dart';
+import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
 import 'package:food_promise/app/shared/utils.dart';
 import 'package:get/get.dart';
 
 class HomeDrawer extends StatelessWidget {
-  final controller = Get.find<HomeController>();
+  final controller = Modular.get<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class HomeDrawer extends StatelessWidget {
                   child: Obx(() {
                     final imageUrl = controller.user.value.imageUrl;
 
-                    if (imageUrl == null || imageUrl.isEmpty)
+                    if (imageUrl == null || imageUrl.isEmpty) {
                       return Container(
                           color: Theme.of(context).canvasColor,
                           width: 100,
@@ -29,10 +30,12 @@ class HomeDrawer extends StatelessWidget {
                           child: Center(
                             child: Text(
                               FoodPromiseUtils.getInitials(
-                                  controller.user.value.name),
+                                      controller.user.value.name) ??
+                                  '',
                               style: TextStyle(fontSize: 32),
                             ),
                           ));
+                    }
 
                     return CachedNetworkImage(
                       width: 100,
@@ -54,7 +57,7 @@ class HomeDrawer extends StatelessWidget {
                   }),
                 ),
                 Spacer(),
-                Obx(() => Text(controller.user.value.name)),
+                Obx(() => Text(controller.user.value.name ?? '')),
                 Spacer(),
               ],
             ),
@@ -65,7 +68,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             onTap: () => Get.to(ContactsScreen()),
             leading: Icon(Icons.people),
-            title: Text("Contacts"),
+            title: Text('Contacts'),
           )
         ]
           ..add(Spacer())

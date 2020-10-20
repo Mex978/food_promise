@@ -31,7 +31,7 @@ class PromiseItem extends StatelessWidget {
                 ),
                 Spacer(),
                 Text(
-                  "Promised ${promise.quantity} ${FoodPromiseUtils.enumToString(promise.promiseType)}\nto ${promise.destinyUserId}",
+                  'Promised ${promise.quantity} ${FoodPromiseUtils.enumToString(promise.promiseType)}\nto ${promise.destinyUserId}',
                   textAlign: TextAlign.center,
                 ),
                 Spacer(),

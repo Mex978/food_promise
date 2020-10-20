@@ -27,12 +27,12 @@ class Promise {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['quantity'] = this.quantity;
-    data['createdAt'] = this.createdAt;
-    data['performed'] = this.performed;
-    data['promiseType'] = FoodPromiseUtils.enumToString(this.promiseType);
-    data['destinyUserId'] = this.destinyUserId;
+    final data = <String, dynamic>{};
+    data['quantity'] = quantity;
+    data['createdAt'] = createdAt;
+    data['performed'] = performed;
+    data['promiseType'] = FoodPromiseUtils.enumToString(promiseType);
+    data['destinyUserId'] = destinyUserId;
     return data;
   }
 }

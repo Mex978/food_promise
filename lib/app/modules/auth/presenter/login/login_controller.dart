@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/home/home_screen.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
 
@@ -13,32 +13,31 @@ class LoginController extends GetxController {
 
   final List<dynamic> inputs = [
     {
-      "label": "E-mail",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'E-mail',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
   ];
 
-  @override
-  void onInit() {
+  void init() {
+    print('--> on init login controller <--');
     formKey = GlobalKey<FormState>();
 
     textEditingControllerUser = TextEditingController();
-    inputs[0]["controller"] = textEditingControllerUser;
+    inputs[0]['controller'] = textEditingControllerUser;
 
     textEditingControllerPass = TextEditingController();
-    inputs[1]["controller"] = textEditingControllerPass;
-    super.onInit();
+    inputs[1]['controller'] = textEditingControllerPass;
   }
 
   Future<bool> _signInFunction() async {
     loading.value = true;
-    final auth = Get.find<FirebaseAuth>();
+    final auth = Modular.get<FirebaseAuth>();
 
     final email = textEditingControllerUser.text;
     final password = textEditingControllerPass.text;
@@ -50,59 +49,43 @@ class LoginController extends GetxController {
     } on FirebaseAuthException catch (e) {
       loading.value = false;
       if (e.code == 'weak-password') {
-        errorDialog(
-          'Error',
-          'The password provided is too weak.',
-        );
+        foodPromiseDialog('Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        errorDialog(
-          'Error',
-          'The account already exists for that email.',
-        );
+        foodPromiseDialog(
+            'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        errorDialog(
-          'Error',
-          'The email provided is invalid',
-        );
+        foodPromiseDialog('Error', 'The email provided is invalid', false);
       } else if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        errorDialog(
-          'Error',
-          'The email or password are wrong',
-        );
+        foodPromiseDialog('Error', 'The email or password are wrong', false);
       } else {
         print(e.toString());
       }
     } catch (e) {
       loading.value = false;
-      errorDialog(
-        'Error',
-        e.toString(),
-      );
+
+      foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
     return false;
   }
 
-  _onSignInPressed() async {
+  void _onSignInPressed() async {
     final success = await _signInFunction();
 
     if (success) {
-      Get.off(HomeScreen()).then((value) => Get.delete<LoginController>());
-      print("Sign in success");
+      print('Sign in success');
+      await Modular.to.pushReplacementNamed('/home');
     } else {
-      print("Sign in failed");
+      print('Sign in failed');
     }
   }
 
-  mainFunction() {
+  void mainFunction() {
     if (formKey.currentState.validate()) _onSignInPressed();
   }
 
-  @override
-  void onClose() {
-    print('--> on close login controller <--');
+  void close() {
     textEditingControllerUser?.dispose();
     textEditingControllerPass?.dispose();
-    super.onClose();
   }
 }

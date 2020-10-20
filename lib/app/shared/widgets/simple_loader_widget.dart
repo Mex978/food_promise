@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SimpleLoader extends StatelessWidget {
   final bool withScaffold;
 
-  const SimpleLoader({Key key, this.withScaffold: false}) : super(key: key);
+  const SimpleLoader({Key key, this.withScaffold = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   bool visible = false;
   @override
   Widget build(BuildContext context) {
-    final isPassword = widget.controller.inputs[widget.index]["obscure"];
+    final isPassword = widget.controller.inputs[widget.index]['obscure'];
     final nextInput = widget.index < (widget.controller.inputs.length - 1)
         ? widget.index + 1
         : null;
@@ -24,14 +24,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (str == null || str.isEmpty) return 'This field is required';
         return null;
       },
-      controller: widget.controller.inputs[widget.index]["controller"],
+      controller: widget.controller.inputs[widget.index]['controller'],
       obscureText: isPassword ? !visible : false,
-      focusNode: widget.controller.inputs[widget.index]["focusNode"],
+      focusNode: widget.controller.inputs[widget.index]['focusNode'],
       decoration: InputDecoration(
         hintText:
-            'Type your ${widget.controller.inputs[widget.index]["label"].toLowerCase()}',
+            'Type your ${widget.controller.inputs[widget.index]['label'].toLowerCase()}',
         border: OutlineInputBorder(),
-        labelText: widget.controller.inputs[widget.index]["label"],
+        labelText: widget.controller.inputs[widget.index]['label'],
         suffixIcon: isPassword
             ? FlatButton(
                 child: Text(visible ? 'UNSHOW' : 'SHOW'),
@@ -45,7 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       onFieldSubmitted: (_) => nextInput != null
           ? FocusScope.of(context)
-              .requestFocus(widget.controller.inputs[nextInput]["focusNode"])
+              .requestFocus(widget.controller.inputs[nextInput]['focusNode'])
           : widget.controller.mainFunction(),
     );
   }

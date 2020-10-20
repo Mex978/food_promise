@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/login/login_controller.dart';
-import 'package:food_promise/app/screens/login/widgets/sign_in_button_widget.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sign_in_button_widget.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/sing_up_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
-import 'package:get/get.dart';
 
-import 'widgets/sing_up_button_widget.dart';
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-class LoginScreen extends StatelessWidget {
-  final controller = Get.put(LoginController());
+class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
+  @override
+  void initState() {
+    super.initState();
+    controller.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +79,7 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  _divider(BuildContext context, double factor) => Divider(
+  Widget _divider(BuildContext context, double factor) => Divider(
       height: (MediaQuery.of(context).size.height * 0.02) * factor,
       color: Colors.transparent);
 }

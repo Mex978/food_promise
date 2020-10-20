@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_promise/app/screens/home/home_screen.dart';
-import 'package:food_promise/app/screens/login/login_controller.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
@@ -18,48 +16,46 @@ class RegisterController extends GetxController {
 
   final List<dynamic> inputs = [
     {
-      "label": "Name",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'Name',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "E-mail",
-      "obscure": false,
-      "focusNode": FocusNode(),
+      'label': 'E-mail',
+      'obscure': false,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
     {
-      "label": "Re-Password",
-      "obscure": true,
-      "focusNode": FocusNode(),
+      'label': 'Re-Password',
+      'obscure': true,
+      'focusNode': FocusNode(),
     },
   ];
 
-  @override
-  void onInit() {
+  void init() {
     formKey = GlobalKey<FormState>();
 
     textEditingControllerName = TextEditingController();
-    inputs[0]["controller"] = textEditingControllerName;
+    inputs[0]['controller'] = textEditingControllerName;
 
     textEditingControllerEmail = TextEditingController();
-    inputs[1]["controller"] = textEditingControllerEmail;
+    inputs[1]['controller'] = textEditingControllerEmail;
 
     textEditingControllerPass = TextEditingController();
-    inputs[2]["controller"] = textEditingControllerPass;
+    inputs[2]['controller'] = textEditingControllerPass;
 
     textEditingControllerRePass = TextEditingController();
-    inputs[3]["controller"] = textEditingControllerRePass;
-    super.onInit();
+    inputs[3]['controller'] = textEditingControllerRePass;
   }
 
   Future<bool> _signUpFunction() async {
     loading.value = true;
-    final auth = Get.find<FirebaseAuth>();
+    final auth = Modular.get<FirebaseAuth>();
 
     final name = textEditingControllerName.text;
     final email = textEditingControllerEmail.text;
@@ -68,11 +64,11 @@ class RegisterController extends GetxController {
 
     try {
       if (rePassword == password) {
-        UserCredential userCredential = await auth
-            .createUserWithEmailAndPassword(email: email, password: password);
+        final userCredential = await auth.createUserWithEmailAndPassword(
+            email: email, password: password);
         final uid = userCredential.user.uid;
 
-        final repository = Get.find<Repository>();
+        final repository = Modular.get<Repository>();
         final result =
             await repository.createUser(uid: uid, name: name, email: email);
 
@@ -80,63 +76,47 @@ class RegisterController extends GetxController {
         return result;
       } else {
         loading.value = false;
-        errorDialog(
-          'Error',
-          'The passwords don\'t match',
-        );
+
+        foodPromiseDialog('Error', 'The passwords don\'t match', false);
       }
     } on FirebaseAuthException catch (e) {
-      print("ERRO SIGN UP ==> ${e.toString()}");
+      print('ERRO SIGN UP ==> ${e.toString()}');
       loading.value = false;
       if (e.code == 'weak-password') {
-        errorDialog(
-          'Error',
-          'The password provided is too weak.',
-        );
+        foodPromiseDialog('Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        errorDialog(
-          'Error',
-          'The account already exists for that email.',
-        );
+        foodPromiseDialog(
+            'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        errorDialog(
-          'Error',
-          'The email provided is invalid',
-        );
+        foodPromiseDialog('Error', 'The email provided is invalid', false);
       }
     } catch (e) {
       loading.value = false;
-      errorDialog(
-        'Error',
-        e.toString(),
-      );
+      foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
     return false;
   }
 
-  _onSignUpPressed() async {
+  void _onSignUpPressed() async {
     final success = await _signUpFunction();
 
     if (success) {
-      Get.offAll(HomeScreen()).then((_) => Get.delete<RegisterController>()
-          .then((_) => Get.delete<LoginController>()));
-      print("Sign Up");
+      print('Sign Up');
+      await Modular.to.pushReplacementNamed('/home');
     } else {
       print('Sign up failed');
     }
   }
 
-  mainFunction() {
+  void mainFunction() {
     if (formKey.currentState.validate()) _onSignUpPressed();
   }
 
-  @override
-  void onClose() {
+  void close() {
     print('--> on close register controller <--');
     textEditingControllerEmail?.dispose();
     textEditingControllerPass?.dispose();
     textEditingControllerRePass?.dispose();
-    super.onClose();
   }
 }
