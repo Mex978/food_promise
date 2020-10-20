@@ -19,11 +19,11 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['uid'] = this.uid;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['imageUrl'] = this.imageUrl;
+    final data = <String, dynamic>{};
+    data['uid'] = uid;
+    data['name'] = name;
+    data['email'] = email;
+    data['imageUrl'] = imageUrl;
 
     return data;
   }

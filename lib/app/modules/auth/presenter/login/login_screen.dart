@@ -79,7 +79,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
     );
   }
 
-  _divider(BuildContext context, double factor) => Divider(
+  Widget _divider(BuildContext context, double factor) => Divider(
       height: (MediaQuery.of(context).size.height * 0.02) * factor,
       color: Colors.transparent);
 }

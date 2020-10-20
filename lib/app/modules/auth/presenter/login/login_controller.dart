@@ -24,7 +24,7 @@ class LoginController extends GetxController {
     },
   ];
 
-  init() {
+  void init() {
     print('--> on init login controller <--');
     formKey = GlobalKey<FormState>();
 
@@ -92,8 +92,8 @@ class LoginController extends GetxController {
     final success = await _signInFunction();
 
     if (success) {
-      Modular.to.pushReplacementNamed('/home');
       print('Sign in success');
+      await Modular.to.pushReplacementNamed('/home');
     } else {
       print('Sign in failed');
     }

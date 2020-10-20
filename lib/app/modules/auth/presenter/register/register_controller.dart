@@ -64,8 +64,8 @@ class RegisterController extends GetxController {
 
     try {
       if (rePassword == password) {
-        UserCredential userCredential = await auth
-            .createUserWithEmailAndPassword(email: email, password: password);
+        final userCredential = await auth.createUserWithEmailAndPassword(
+            email: email, password: password);
         final uid = userCredential.user.uid;
 
         final repository = Modular.get<Repository>();
@@ -117,18 +117,18 @@ class RegisterController extends GetxController {
     return false;
   }
 
-  _onSignUpPressed() async {
+  void _onSignUpPressed() async {
     final success = await _signUpFunction();
 
     if (success) {
-      Modular.to.pushReplacementNamed('/home');
       print('Sign Up');
+      await Modular.to.pushReplacementNamed('/home');
     } else {
       print('Sign up failed');
     }
   }
 
-  mainFunction() {
+  void mainFunction() {
     if (formKey.currentState.validate()) _onSignUpPressed();
   }
 

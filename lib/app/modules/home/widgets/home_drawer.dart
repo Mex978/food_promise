@@ -22,7 +22,7 @@ class HomeDrawer extends StatelessWidget {
                   child: Obx(() {
                     final imageUrl = controller.user.value.imageUrl;
 
-                    if (imageUrl == null || imageUrl.isEmpty)
+                    if (imageUrl == null || imageUrl.isEmpty) {
                       return Container(
                           color: Theme.of(context).canvasColor,
                           width: 100,
@@ -35,6 +35,7 @@ class HomeDrawer extends StatelessWidget {
                               style: TextStyle(fontSize: 32),
                             ),
                           ));
+                    }
 
                     return CachedNetworkImage(
                       width: 100,

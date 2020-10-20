@@ -33,7 +33,7 @@ class Repository {
 
   Future<bool> createUser({String uid, String name, String email}) async {
     try {
-      client.collection('users').doc(uid).set({
+      await client.collection('users').doc(uid).set({
         'name': name,
         'email': email,
       });

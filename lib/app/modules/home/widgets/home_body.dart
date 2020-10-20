@@ -17,7 +17,7 @@ class HomeBody extends StatelessWidget {
         print(_controller.loading.value);
         if (_controller.loading.value) return SimpleLoader();
 
-        if (_controller.promises.isEmpty)
+        if (_controller.promises.isEmpty) {
           return Stack(
             children: <Widget>[
               ListView(),
@@ -35,6 +35,7 @@ class HomeBody extends StatelessWidget {
               )
             ],
           );
+        }
 
         return GridView.count(
           padding: EdgeInsets.all(16),

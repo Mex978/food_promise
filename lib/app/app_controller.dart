@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class FoodPromiseController extends GetxController {
   final isLogged = false.obs;
 
-  chekIsLogged() {
+  void chekIsLogged() {
     final auth = Modular.get<FirebaseAuth>();
 
     auth.authStateChanges().listen((User user) {

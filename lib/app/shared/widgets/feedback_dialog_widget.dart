@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:google_fonts/google_fonts.dart';
 
-errorDialog(String title, String message) {
+void errorDialog(String title, String message) {
   Get.snackbar(
     title,
     message,
@@ -15,7 +15,7 @@ errorDialog(String title, String message) {
   );
 }
 
-successDialog(String title, String message) {
+void successDialog(String title, String message) {
   Get.snackbar(
     title,
     message,

@@ -37,32 +37,36 @@ class HomeController extends GetxController {
     });
   }
 
-  loadPromises() async {
+  Future<void> loadPromises() async {
     if (!loading.value) loading.value = true;
-
-    _repository.getPromises(user.value.uid).then((list) {
+    try {
+      final list = await _repository.getPromises(user.value.uid);
       promises.clear();
       promises.addAll(list);
       loading.value = false;
-    });
+    } catch (e) {
+      loading.value = false;
+      errorDialog('Error', '$e');
+    }
   }
 
-  makePromise() async {
+  void makePromise() async {
     final success = await _repository.createPromise(user.value.uid);
 
-    if (success)
+    if (success) {
       successDialog(
         'Success',
         'Promise created with success!',
       );
-    else
+    } else {
       errorDialog(
         'Error',
         'Some error ocurred :(',
       );
+    }
   }
 
-  signOut() async {
+  void signOut() {
     final auth = Modular.get<FirebaseAuth>();
     auth.signOut().then((value) => Modular.to.pushReplacementNamed('/login'));
   }
