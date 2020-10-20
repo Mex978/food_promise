@@ -30,7 +30,8 @@ class HomeDrawer extends StatelessWidget {
                           child: Center(
                             child: Text(
                               FoodPromiseUtils.getInitials(
-                                  controller.user.value.name),
+                                      controller.user.value.name) ??
+                                  '',
                               style: TextStyle(fontSize: 32),
                             ),
                           ));
@@ -55,7 +56,7 @@ class HomeDrawer extends StatelessWidget {
                   }),
                 ),
                 Spacer(),
-                Obx(() => Text(controller.user.value.name)),
+                Obx(() => Text(controller.user.value.name ?? '')),
                 Spacer(),
               ],
             ),

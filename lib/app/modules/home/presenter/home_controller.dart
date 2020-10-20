@@ -8,16 +8,18 @@ import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  final loading = false.obs;
+  final loading = true.obs;
   final user = User().obs;
   final _repository = Modular.get<Repository>();
   final _auth = Modular.get<FirebaseAuth>();
 
   final promises = <Promise>[].obs;
 
-  @override
-  onInit() {
-    print("---> on init <---");
+  HomeController() {
+    _init();
+  }
+
+  void _init() {
     getUserInfo().then((_) => loadPromises());
   }
 
@@ -36,7 +38,7 @@ class HomeController extends GetxController {
   }
 
   loadPromises() async {
-    loading.value = true;
+    if (!loading.value) loading.value = true;
 
     _repository.getPromises(user.value.uid).then((list) {
       promises.clear();
@@ -62,6 +64,6 @@ class HomeController extends GetxController {
 
   signOut() async {
     final auth = Modular.get<FirebaseAuth>();
-    auth.signOut().then((value) => Modular.to.pushNamed('/auth'));
+    auth.signOut().then((value) => Modular.to.pushReplacementNamed('/login'));
   }
 }

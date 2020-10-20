@@ -104,7 +104,6 @@ class LoginController extends GetxController {
   }
 
   void close() {
-    print('--> on close login controller <--');
     textEditingControllerUser?.dispose();
     textEditingControllerPass?.dispose();
   }

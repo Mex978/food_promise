@@ -22,10 +22,11 @@ class _FoodPromiseState extends State<FoodPromise> {
 
     _subscription = controller.isLogged.listen((value) {
       _subscription.cancel();
+
       if (value) {
-        Modular.link.pushNamed('/home');
+        Modular.to.pushReplacementNamed('/home');
       } else {
-        Modular.to.pushNamed('/login');
+        Modular.to.pushReplacementNamed('/login');
       }
     });
   }
