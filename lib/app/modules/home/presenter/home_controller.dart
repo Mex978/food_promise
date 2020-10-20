@@ -46,7 +46,7 @@ class HomeController extends GetxController {
       loading.value = false;
     } catch (e) {
       loading.value = false;
-      errorDialog('Error', '$e');
+      foodPromiseDialog('Error', '$e', false);
     }
   }
 
@@ -54,15 +54,10 @@ class HomeController extends GetxController {
     final success = await _repository.createPromise(user.value.uid);
 
     if (success) {
-      successDialog(
-        'Success',
-        'Promise created with success!',
-      );
+      foodPromiseDialog('Success', 'Promise created with success!', true);
+      await loadPromises();
     } else {
-      errorDialog(
-        'Error',
-        'Some error ocurred :(',
-      );
+      foodPromiseDialog('Error', 'Some error ocurred :(', false);
     }
   }
 

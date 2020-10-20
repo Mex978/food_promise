@@ -49,39 +49,20 @@ class LoginController extends GetxController {
     } on FirebaseAuthException catch (e) {
       loading.value = false;
       if (e.code == 'weak-password') {
-        // errorDialog(
-        //   'Error',
-        //   'The password provided is too weak.',
-        // );
         foodPromiseDialog('Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        // errorDialog(
-        //   'Error',
-        //   'The account already exists for that email.',
-        // );
         foodPromiseDialog(
             'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        // errorDialog(
-        //   'Error',
-        //   'The email provided is invalid',
-        // );
         foodPromiseDialog('Error', 'The email provided is invalid', false);
       } else if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        // errorDialog(
-        //   'Error',
-        //   'The email or password are wrong',
-        // );
         foodPromiseDialog('Error', 'The email or password are wrong', false);
       } else {
         print(e.toString());
       }
     } catch (e) {
       loading.value = false;
-      // errorDialog(
-      //   'Error',
-      //   e.toString(),
-      // );
+
       foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }

@@ -76,41 +76,22 @@ class RegisterController extends GetxController {
         return result;
       } else {
         loading.value = false;
-        // errorDialog(
-        //   'Error',
-        //   'The passwords don\'t match',
-        // );
+
         foodPromiseDialog('Error', 'The passwords don\'t match', false);
       }
     } on FirebaseAuthException catch (e) {
       print('ERRO SIGN UP ==> ${e.toString()}');
       loading.value = false;
       if (e.code == 'weak-password') {
-        // errorDialog(
-        // //   'Error',
-        // //   'The password provided is too weak.',
-        // // );
         foodPromiseDialog('Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        // errorDialog(
-        //   'Error',
-        //   'The account already exists for that email.',
-        // );
         foodPromiseDialog(
             'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        errorDialog(
-          'Error',
-          'The email provided is invalid',
-        );
         foodPromiseDialog('Error', 'The email provided is invalid', false);
       }
     } catch (e) {
       loading.value = false;
-      // errorDialog(
-      //   'Error',
-      //   e.toString(),
-      // );
       foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
