@@ -13,7 +13,6 @@ class FoodPromiseController extends GetxController {
         print('User is currently signed out!');
         isLogged.value = false;
       } else {
-        // auth.signOut();
         print('User is signed in!');
         isLogged.value = true;
       }
