@@ -1,11 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fAuth;
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
+import 'package:food_promise/app/modules/home/models/user_model.dart';
 import 'package:meta/meta.dart';
 
 class Repository {
   final FirebaseFirestore client;
 
   Repository({@required this.client});
+
+  Future<List<User>> getAllUsers() async {
+    final _users_collection = await client.collection('users').get();
+
+    return _users_collection.docs?.map((u) {
+          return User.fromDoc(u);
+        })?.toList() ??
+        [];
+  }
+
+  Future<bool> addContact(User newContact) async {
+    try {
+      final uid = Modular.get<fAuth.FirebaseAuth>().currentUser.uid;
+      await client
+          .collection('users')
+          .doc(uid)
+          .collection('contacts')
+          .add(newContact.toJson());
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<User>> getContacts() async {
+    final uid = Modular.get<fAuth.FirebaseAuth>().currentUser.uid;
+    final _contacts =
+        await client.collection('users').doc(uid).collection('contacts').get();
+
+    return _contacts.docs.map((c) => User.fromDoc(c)).toList();
+  }
 
   Future<List<Promise>> getPromises(String uid) async {
     final myPromises =

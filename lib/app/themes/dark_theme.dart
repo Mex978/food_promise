@@ -12,6 +12,9 @@ class DarkTheme {
     canvasColor: secondaryColor,
     fontFamily: GoogleFonts.openSans().fontFamily,
     indicatorColor: Colors.white,
+    textTheme: TextTheme(
+      headline6: TextStyle(color: Colors.black),
+    ),
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.white,
       textTheme: ButtonTextTheme.primary,
