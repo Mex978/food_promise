@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
-import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
+import 'package:food_promise/app/shared/utils.dart';
 import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
@@ -77,22 +77,25 @@ class RegisterController extends GetxController {
       } else {
         loading.value = false;
 
-        foodPromiseDialog('Error', 'The passwords don\'t match', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The passwords don\'t match', false);
       }
     } on FirebaseAuthException catch (e) {
       print('ERRO SIGN UP ==> ${e.toString()}');
       loading.value = false;
       if (e.code == 'weak-password') {
-        foodPromiseDialog('Error', 'The password provided is too weak.', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        foodPromiseDialog(
+        FoodPromiseUtils.foodPromiseDialog(
             'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        foodPromiseDialog('Error', 'The email provided is invalid', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The email provided is invalid', false);
       }
     } catch (e) {
       loading.value = false;
-      foodPromiseDialog('Error', e.toString(), false);
+      FoodPromiseUtils.foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
     return false;

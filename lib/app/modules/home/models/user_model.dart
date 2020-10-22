@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   String uid;
   String name;
@@ -10,6 +12,13 @@ class User {
     this.email,
     this.imageUrl,
   });
+
+  User.fromDoc(QueryDocumentSnapshot doc) {
+    uid = doc.id;
+    name = doc.data()['name'];
+    email = doc.data()['email'];
+    imageUrl = doc.data()['imageUrl'];
+  }
 
   User.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];

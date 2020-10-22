@@ -8,14 +8,12 @@ class FoodPromiseController extends GetxController {
   void chekIsLogged() {
     final auth = Modular.get<FirebaseAuth>();
 
-    auth.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
-        isLogged.value = false;
-      } else {
-        print('User is signed in!');
-        isLogged.value = true;
-      }
-    });
+    if (auth.currentUser == null) {
+      print('User is currently signed out!');
+      isLogged.value = false;
+    } else {
+      print('User is signed in!');
+      isLogged.value = true;
+    }
   }
 }

@@ -14,7 +14,6 @@ class HomeBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => _controller.loadPromises(),
       child: Obx(() {
-        print(_controller.loading.value);
         if (_controller.loading.value) return SimpleLoader();
 
         if (_controller.promises.isEmpty) {

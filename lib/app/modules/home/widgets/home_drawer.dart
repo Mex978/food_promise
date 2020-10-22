@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/screens/contacts/contacts_screen.dart';
 import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
-import 'package:food_promise/app/shared/utils.dart';
+import 'package:food_promise/app/shared/widgets/avatar_widget.dart';
 import 'package:get/get.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -18,44 +16,14 @@ class HomeDrawer extends StatelessWidget {
           DrawerHeader(
             child: Column(
               children: [
-                ClipOval(
-                  child: Obx(() {
-                    final imageUrl = controller.user.value.imageUrl;
+                Obx(() {
+                  final imageUrl = controller.user.value.imageUrl;
 
-                    if (imageUrl == null || imageUrl.isEmpty) {
-                      return Container(
-                          color: Theme.of(context).canvasColor,
-                          width: 100,
-                          height: 100,
-                          child: Center(
-                            child: Text(
-                              FoodPromiseUtils.getInitials(
-                                      controller.user.value.name) ??
-                                  '',
-                              style: TextStyle(fontSize: 32),
-                            ),
-                          ));
-                    }
-
-                    return CachedNetworkImage(
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                      imageUrl: imageUrl,
-                      progressIndicatorBuilder:
-                          (context, url, downloadProgress) => Container(
-                        color: Theme.of(context).canvasColor,
-                        width: 100,
-                        height: 100,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                              value: downloadProgress.progress),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Text('Error'),
-                    );
-                  }),
-                ),
+                  return AvatarWidget(
+                    name: controller.user.value.name,
+                    imageUrl: imageUrl,
+                  );
+                }),
                 Spacer(),
                 Obx(() => Text(controller.user.value.name ?? '')),
                 Spacer(),
@@ -66,17 +34,20 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () => Get.to(ContactsScreen()),
+            onTap: () => Modular.to.pushNamed('/contacts'),
             leading: Icon(Icons.people),
             title: Text('Contacts'),
           )
         ]
           ..add(Spacer())
           ..add(ListTile(
-            leading: Icon(Icons.close, color: Colors.red),
+            leading: Icon(Icons.close, color: Theme.of(context).primaryColor),
+            tileColor: Colors.white,
             title: Text(
               'Sign Out',
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w900),
             ),
             onTap: () => controller.signOut(),
           )),

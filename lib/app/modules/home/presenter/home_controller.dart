@@ -4,7 +4,7 @@ import 'package:food_promise/app/modules/home/models/promise_model.dart';
 
 import 'package:food_promise/app/modules/home/models/user_model.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
-import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
+import 'package:food_promise/app/shared/utils.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -46,7 +46,7 @@ class HomeController extends GetxController {
       loading.value = false;
     } catch (e) {
       loading.value = false;
-      foodPromiseDialog('Error', '$e', false);
+      FoodPromiseUtils.foodPromiseDialog('Error', '$e', false);
     }
   }
 
@@ -54,10 +54,12 @@ class HomeController extends GetxController {
     final success = await _repository.createPromise(user.value.uid);
 
     if (success) {
-      foodPromiseDialog('Success', 'Promise created with success!', true);
+      FoodPromiseUtils.foodPromiseDialog(
+          'Success', 'Promise created with success!', true);
       await loadPromises();
     } else {
-      foodPromiseDialog('Error', 'Some error ocurred :(', false);
+      FoodPromiseUtils.foodPromiseDialog(
+          'Error', 'Some error ocurred :(', false);
     }
   }
 

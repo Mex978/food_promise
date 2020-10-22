@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/shared/widgets/feedback_dialog_widget.dart';
+import 'package:food_promise/app/shared/utils.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
@@ -49,21 +49,24 @@ class LoginController extends GetxController {
     } on FirebaseAuthException catch (e) {
       loading.value = false;
       if (e.code == 'weak-password') {
-        foodPromiseDialog('Error', 'The password provided is too weak.', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The password provided is too weak.', false);
       } else if (e.code == 'email-already-in-use') {
-        foodPromiseDialog(
+        FoodPromiseUtils.foodPromiseDialog(
             'Error', 'The account already exists for that email.', false);
       } else if (e.code == 'invalid-email') {
-        foodPromiseDialog('Error', 'The email provided is invalid', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The email provided is invalid', false);
       } else if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        foodPromiseDialog('Error', 'The email or password are wrong', false);
+        FoodPromiseUtils.foodPromiseDialog(
+            'Error', 'The email or password are wrong', false);
       } else {
         print(e.toString());
       }
     } catch (e) {
       loading.value = false;
 
-      foodPromiseDialog('Error', e.toString(), false);
+      FoodPromiseUtils.foodPromiseDialog('Error', e.toString(), false);
       print(e.toString());
     }
     return false;
