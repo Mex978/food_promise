@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fAuth;
+import 'package:firebase_auth/firebase_auth.dart' as f_auth;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
 import 'package:food_promise/app/modules/home/models/user_model.dart';
+import 'package:food_promise/app/modules/home/enums.dart';
 import 'package:meta/meta.dart';
 
 class Repository {
@@ -21,7 +22,7 @@ class Repository {
 
   Future<bool> addContact(User newContact) async {
     try {
-      final uid = Modular.get<fAuth.FirebaseAuth>().currentUser.uid;
+      final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
       await client
           .collection('users')
           .doc(uid)
@@ -35,7 +36,7 @@ class Repository {
   }
 
   Future<List<User>> getContacts() async {
-    final uid = Modular.get<fAuth.FirebaseAuth>().currentUser.uid;
+    final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
     final _contacts =
         await client.collection('users').doc(uid).collection('contacts').get();
 
@@ -50,18 +51,24 @@ class Repository {
         [];
   }
 
-  Future<bool> createPromise(String uid) async {
+  Future<bool> createPromise(
+      {User target, PromiseType type, int quantity}) async {
     try {
-      await client.collection('users').doc(uid).collection('promises').add({
-        'quantity': 1,
+      await client
+          .collection('users')
+          .doc(target.uid)
+          .collection('promises')
+          .add({
+        'quantity': quantity,
         'createdAt': DateTime.now().millisecondsSinceEpoch,
         'performed': false,
-        'promiseType': 'BK',
-        'destinyUserId': 'Max Lima'
+        'promiseType': type.name,
+        'destinyUserId': target.name
       });
 
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }

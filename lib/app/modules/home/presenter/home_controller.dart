@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
-
-import 'package:food_promise/app/modules/home/models/user_model.dart';
+import 'package:asuka/asuka.dart' as asuka;
+import 'package:get/get.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/utils.dart';
-import 'package:get/get.dart';
+
+import '../models/user_model.dart';
+import '../widgets/make_new_promise_widget.dart';
 
 class HomeController extends GetxController {
   final loading = true.obs;
@@ -50,8 +52,21 @@ class HomeController extends GetxController {
     }
   }
 
-  void makePromise() async {
-    final success = await _repository.createPromise(user.value.uid);
+  void makePromise({User preSelectedPromiseTarget}) async {
+    final newPromise = await asuka.showDialog(
+      builder: (context) => MakeNewPromiseDialog(
+        preSelectedPromiseTarget: preSelectedPromiseTarget,
+      ),
+    );
+
+    if (newPromise == null) {
+      return;
+    }
+
+    final success = await _repository.createPromise(
+        target: newPromise['selectedPromiseTarget'],
+        type: newPromise['selectedPromiseType'],
+        quantity: newPromise['quantity']);
 
     if (success) {
       FoodPromiseUtils.foodPromiseDialog(
