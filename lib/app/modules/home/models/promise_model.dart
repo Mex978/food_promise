@@ -1,6 +1,6 @@
 import 'package:food_promise/app/shared/utils.dart';
 
-import '../../../shared/enums.dart';
+import '../enums.dart';
 
 class Promise {
   int quantity;
