@@ -7,7 +7,6 @@ import 'package:food_promise/app/modules/home/home_module.dart';
 
 import 'app_controller.dart';
 import 'app_widget.dart';
-import 'modules/contacts/contacts_module.dart';
 import 'shared/service/repository.dart';
 
 class AppModule extends MainModule {
@@ -39,10 +38,6 @@ class AppModule extends MainModule {
         ModularRouter(
           '/home',
           module: HomeModule(),
-        ),
-        ModularRouter(
-          '/contacts',
-          module: ContactsModule(),
         ),
       ];
 }

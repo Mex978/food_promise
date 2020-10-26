@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/contacts/presenter/contacts_controller.dart';
 
+import '../presenter/contacts_controller.dart';
 import '../consts.dart';
 
 class ContactsAppBar extends StatelessWidget implements PreferredSizeWidget {

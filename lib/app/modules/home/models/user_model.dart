@@ -14,7 +14,7 @@ class User {
   });
 
   User.fromDoc(QueryDocumentSnapshot doc) {
-    uid = doc.id;
+    uid = doc.data()['uid'];
     name = doc.data()['name'];
     email = doc.data()['email'];
     imageUrl = doc.data()['imageUrl'];

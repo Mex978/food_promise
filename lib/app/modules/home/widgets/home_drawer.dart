@@ -34,7 +34,10 @@ class HomeDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () => Modular.to.pushNamed('/contacts'),
+            onTap: () {
+              Navigator.pop(context);
+              Modular.to.pushNamed('/home/contacts');
+            },
             leading: Icon(Icons.people),
             title: Text('Contacts'),
           )

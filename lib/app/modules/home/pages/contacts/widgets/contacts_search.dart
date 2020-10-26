@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/contacts/presenter/contacts_controller.dart';
-import 'package:food_promise/app/modules/contacts/repository/contacts_shared_preferences.dart';
 import 'package:food_promise/app/modules/home/models/user_model.dart' as model;
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
@@ -12,7 +10,6 @@ class ContactsSearch extends SearchDelegate {
   final List<String> currentContacts;
   final _repository = Modular.get<Repository>();
   final _auth = Modular.get<FirebaseAuth>();
-  final _controller = Modular.get<ContactsController>();
   model.User selectedResult;
 
   ContactsSearch(this.currentContacts);
