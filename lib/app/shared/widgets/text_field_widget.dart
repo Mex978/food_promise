@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatefulWidget {
   final int index;
@@ -20,6 +21,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         : null;
 
     return TextFormField(
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+            RegExp(r'[A-Za-z0-9:;?/!.@#$%¨&*()_+=-\s]')),
+      ],
       validator: (str) {
         if (str == null || str.isEmpty) return 'This field is required';
         return null;
