@@ -25,7 +25,6 @@ class LoginController extends GetxController {
   ];
 
   void init() {
-    print('--> on init login controller <--');
     formKey = GlobalKey<FormState>();
 
     textEditingControllerUser = TextEditingController();

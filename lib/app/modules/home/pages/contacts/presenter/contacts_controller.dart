@@ -47,16 +47,12 @@ class ContactsController extends GetxController {
                   style: TextStyle(color: Colors.white),
                 ),
                 content: Text(
-                  'You want to add the user?\n\n\tName: ${result.name}\n\tE-mail: ${result.email}',
+                  'You want to add the user?\n\nName: ${result.name}\nE-mail: ${result.email}',
                 ),
                 actions: [
                   FlatButton(
                       onPressed: () {
-                        print(result.uid);
-                        print(result.name);
-                        print(result.email);
                         _repository.addContact(result);
-                        print(result);
                         contacts.add(result);
                         Navigator.pop(context);
                       },

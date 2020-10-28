@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
 import 'package:get/get.dart';
-import '../../../shared/widgets/simple_loader_widget.dart';
 
 import 'promise_item_widget.dart';
 
@@ -14,8 +13,6 @@ class HomeBody extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => _controller.loadPromises(),
       child: Obx(() {
-        if (_controller.loading.value) return SimpleLoader();
-
         if (_controller.promises.isEmpty) {
           return Stack(
             children: <Widget>[
@@ -48,7 +45,8 @@ class HomeBody extends StatelessWidget {
                       onPressed: () {
                         Future.delayed(
                           Duration(milliseconds: 200),
-                          () {},
+                          () => _controller.changePromiseStatus(
+                              promise, () => _controller.loadPromises()),
                         );
                       },
                     ),

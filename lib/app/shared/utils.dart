@@ -41,7 +41,7 @@ class FoodPromiseUtils {
     );
   }
 
-  static void foodPromiseDialog(String title, String message, bool sucess) {
+  static void foodPromiseDialog(String title, String message, bool success) {
     final titleStyle = GoogleFonts.openSans(
         textStyle: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18));
@@ -49,47 +49,51 @@ class FoodPromiseUtils {
     final messageStyle = GoogleFonts.openSans(
         textStyle: TextStyle(color: Colors.white, fontSize: 16));
 
-    asuka.showSnackBar(SnackBar(
-      behavior: SnackBarBehavior.floating,
-      content: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          sucess
-              ? Icon(
-                  Icons.check,
-                  color: Colors.white,
-                )
-              : Icon(
-                  Icons.close,
-                  color: Colors.white,
-                ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: Text(
-                      '$title',
-                      style: titleStyle,
-                    ),
-                  ),
-                  Text(
-                    '$message',
-                    style: messageStyle,
-                    softWrap: true,
-                  ),
-                ],
+    final content = Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        success
+            ? Icon(
+                Icons.check,
+                color: Colors.white,
+              )
+            : Icon(
+                Icons.close,
+                color: Colors.white,
               ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4.0),
+                  child: Text(
+                    '$title',
+                    style: titleStyle,
+                  ),
+                ),
+                Text(
+                  '$message',
+                  style: messageStyle,
+                  softWrap: true,
+                ),
+              ],
             ),
           ),
-        ],
+        ),
+      ],
+    );
+
+    asuka.showSnackBar(
+      SnackBar(
+        backgroundColor: success ? Colors.green[600] : Colors.red[600],
+        content: content,
+        behavior: SnackBarBehavior.floating,
       ),
-      backgroundColor: sucess ? Colors.green[600] : Colors.red[600],
-    ));
+    );
   }
 }

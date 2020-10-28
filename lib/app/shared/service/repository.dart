@@ -43,16 +43,17 @@ class Repository {
     return _contacts.docs.map((c) => User.fromDoc(c)).toList();
   }
 
-  Future<List<Promise>> getPromises(String uid) async {
+  Future<List<Promise>> getPromises() async {
+    final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
     final myPromises =
         await client.collection('users').doc(uid).collection('promises').get();
 
-    return myPromises.docs?.map((p) => Promise.fromJson(p.data()))?.toList() ??
-        [];
+    return myPromises.docs?.map((p) => Promise.fromDoc(p))?.toList() ?? [];
   }
 
   Future<bool> createPromise(
       {User target, PromiseType type, int quantity}) async {
+    final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
     try {
       await client
           .collection('users')
@@ -61,10 +62,59 @@ class Repository {
           .add({
         'quantity': quantity,
         'createdAt': DateTime.now().millisecondsSinceEpoch,
+        'cancelled': false,
         'performed': false,
         'promiseType': type.name,
+        'promisedBy': uid,
         'destinyUserId': target.name
+      }).then((value) async {
+        await client
+            .collection('users')
+            .doc(uid)
+            .collection('promises')
+            .doc(value.id)
+            .set({
+          'quantity': quantity,
+          'createdAt': DateTime.now().millisecondsSinceEpoch,
+          'cancelled': false,
+          'performed': false,
+          'promiseType': type.name,
+          'promisedBy': uid,
+          'destinyUserId': target.name
+        });
       });
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> changePromise(Promise promise,
+      {bool cancelled = false, bool performed = false}) async {
+    final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
+    try {
+      await client
+          .collection('users')
+          .doc(uid)
+          .collection('promises')
+          .doc(promise.uid)
+          .update(cancelled
+              ? {'cancelled': cancelled}
+              : performed
+                  ? {'performed': performed}
+                  : {});
+      await client
+          .collection('users')
+          .doc(promise.promisedBy)
+          .collection('promises')
+          .doc(promise.uid)
+          .update(cancelled
+              ? {'cancelled': cancelled}
+              : performed
+                  ? {'performed': performed}
+                  : {});
 
       return true;
     } catch (e) {

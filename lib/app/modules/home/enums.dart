@@ -4,7 +4,7 @@ extension PromiseTypeExtension on PromiseType {
   String get name {
     switch (this) {
       case PromiseType.BK:
-        return 'Burger King';
+        return 'BK';
       default:
         return null;
     }

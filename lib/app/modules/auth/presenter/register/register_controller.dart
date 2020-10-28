@@ -117,7 +117,6 @@ class RegisterController extends GetxController {
   }
 
   void close() {
-    print('--> on close register controller <--');
     textEditingControllerEmail?.dispose();
     textEditingControllerPass?.dispose();
     textEditingControllerRePass?.dispose();

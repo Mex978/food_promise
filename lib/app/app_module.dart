@@ -34,10 +34,12 @@ class AppModule extends MainModule {
         ModularRouter(
           '/login',
           module: AuthModule(),
+          transition: TransitionType.fadeIn,
         ),
         ModularRouter(
           '/home',
           module: HomeModule(),
+          transition: TransitionType.fadeIn,
         ),
       ];
 }

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
 import 'package:asuka/asuka.dart' as asuka;
@@ -42,7 +43,7 @@ class HomeController extends GetxController {
   Future<void> loadPromises() async {
     if (!loading.value) loading.value = true;
     try {
-      final list = await _repository.getPromises(user.value.uid);
+      final list = await _repository.getPromises();
       promises.clear();
       promises.addAll(list);
       loading.value = false;
@@ -76,6 +77,53 @@ class HomeController extends GetxController {
       FoodPromiseUtils.foodPromiseDialog(
           'Error', 'Some error ocurred :(', false);
     }
+  }
+
+  void changePromiseStatus(Promise promise, Function onPerformAction) {
+    asuka.showBottomSheet((context) => Container(
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      RaisedButton.icon(
+                        icon: Icon(Icons.check),
+                        label: Text('COMPLETED'),
+                        onPressed: () {
+                          _repository
+                              .changePromise(promise, performed: true)
+                              .then((value) {
+                            onPerformAction();
+                            Navigator.pop(context);
+                          });
+                        },
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      RaisedButton.icon(
+                        icon: Icon(Icons.close),
+                        label: Text('CANCELED'),
+                        onPressed: () {
+                          _repository
+                              .changePromise(promise, cancelled: true)
+                              .then((value) {
+                            onPerformAction();
+                            Navigator.pop(context);
+                          });
+                        },
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 
   void signOut() {
