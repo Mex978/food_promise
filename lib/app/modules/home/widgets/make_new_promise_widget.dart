@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/shared/utils.dart';
 
 import '../enums.dart';
 import '../pages/contacts/presenter/contacts_controller.dart';
@@ -17,9 +18,11 @@ class MakeNewPromiseDialog extends StatefulWidget {
 
 class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
   final List<User> _contacts = Modular.get<ContactsController>().contacts;
+
   PromiseType selectedPromiseType;
   User selectedPromiseTarget;
   int quantity = 0;
+  DateTime promiseDate = DateTime.now();
 
   @override
   void initState() {
@@ -64,6 +67,39 @@ class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
               Text(
                 'Make a new promise',
                 style: Theme.of(context).textTheme.headline5,
+              ),
+              SizedBox(height: 15),
+              Text('Promise date', style: TextStyle(color: Colors.grey)),
+              SizedBox(height: 5),
+              Container(
+                width: double.infinity,
+                child: FlatButton(
+                  padding: EdgeInsets.all(12),
+                  color: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      side: BorderSide(
+                        color: Colors.white38,
+                      )),
+                  child: Row(
+                    children: [
+                      Text(FoodPromiseUtils.timestampToHuman(
+                          promiseDate.millisecondsSinceEpoch)),
+                      Spacer(),
+                      Icon(Icons.date_range),
+                    ],
+                  ),
+                  onPressed: () async {
+                    final _date = await showDatePicker(
+                        context: context,
+                        initialDate: promiseDate,
+                        firstDate: DateTime(2016),
+                        lastDate: DateTime.now());
+                    setState(() {
+                      promiseDate = _date ?? promiseDate;
+                    });
+                  },
+                ),
               ),
               SizedBox(height: 15),
               Text('Promise target', style: TextStyle(color: Colors.grey)),
@@ -196,7 +232,8 @@ class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
                                     'selectedPromiseTarget':
                                         selectedPromiseTarget,
                                     'selectedPromiseType': selectedPromiseType,
-                                    'quantity': quantity
+                                    'quantity': quantity,
+                                    'promiseDate': promiseDate
                                   });
                                 }
                               : null,

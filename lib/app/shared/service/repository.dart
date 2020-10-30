@@ -11,6 +11,12 @@ class Repository {
 
   Repository({@required this.client});
 
+  Future<String> getUserNameOfUserUid(String uid) async {
+    return await client.collection('users').doc(uid).get().then((user) =>
+        (user.data().containsKey('name') ? user.data()['name'] : null) ??
+        'Anonymous');
+  }
+
   Future<List<User>> getAllUsers() async {
     final _users_collection = await client.collection('users').get();
 
@@ -52,9 +58,11 @@ class Repository {
   }
 
   Future<bool> createPromise(
-      {User target, PromiseType type, int quantity}) async {
+      {User target,
+      PromiseType type,
+      int quantity,
+      DateTime promiseDate}) async {
     final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
-    final myName = Modular.get<f_auth.FirebaseAuth>().currentUser.displayName;
     try {
       await client
           .collection('users')
@@ -62,12 +70,12 @@ class Repository {
           .collection('promises')
           .add({
         'quantity': quantity,
-        'createdAt': DateTime.now().millisecondsSinceEpoch,
+        'createdAt': promiseDate.millisecondsSinceEpoch,
         'cancelled': false,
         'performed': false,
         'promiseType': type.name,
-        'promisedBy': myName,
-        'destinyUserId': target.name
+        'promisedBy': uid,
+        'destinyUserId': target.uid
       }).then((value) async {
         await client
             .collection('users')
@@ -76,12 +84,12 @@ class Repository {
             .doc(value.id)
             .set({
           'quantity': quantity,
-          'createdAt': DateTime.now().millisecondsSinceEpoch,
+          'createdAt': promiseDate.millisecondsSinceEpoch,
           'cancelled': false,
           'performed': false,
           'promiseType': type.name,
           'promisedBy': uid,
-          'destinyUserId': target.name
+          'destinyUserId': target.uid
         });
       });
 

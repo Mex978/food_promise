@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
+import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
+import 'package:get/get.dart';
 
 import '../models/promise_model.dart';
-import 'package:food_promise/app/shared/service/repository.dart';
 
 class HomeBottomSheet extends StatelessWidget {
-  final _repository = Modular.get<Repository>();
+  final controller = Modular.get<HomeController>();
   final Promise promise;
   final Function onPerformAction;
 
@@ -22,38 +24,48 @@ class HomeBottomSheet extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  RaisedButton.icon(
-                    icon: Icon(Icons.check),
-                    label: Text('COMPLETED'),
-                    onPressed: () {
-                      _repository
-                          .changePromise(promise, performed: true)
-                          .then((value) {
-                        onPerformAction();
-                        Navigator.pop(context);
-                      });
-                    },
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  RaisedButton.icon(
-                    icon: Icon(Icons.close),
-                    label: Text('CANCELED'),
-                    onPressed: () {
-                      _repository
-                          .changePromise(promise, cancelled: true)
-                          .then((value) {
-                        onPerformAction();
-                        Navigator.pop(context);
-                      });
-                    },
-                    color: Theme.of(context).primaryColor,
-                  )
-                ],
-              ),
+              child: Obx(() {
+                if (controller.loadingBottomSheet.value) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SimpleLoader(
+                        indicatorColor: Theme.of(context).primaryColor,
+                      )
+                    ],
+                  );
+                }
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    RaisedButton.icon(
+                      icon: Icon(Icons.check),
+                      label: Text('COMPLETED'),
+                      onPressed: () {
+                        controller.performPromise(promise).then((_) {
+                          onPerformAction();
+                          Navigator.pop(context);
+                        });
+                      },
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    RaisedButton.icon(
+                      icon: Icon(Icons.close),
+                      label: Text('CANCELED'),
+                      onPressed: () {
+                        controller.cancelPromise(promise).then((_) {
+                          onPerformAction();
+                          Navigator.pop(context);
+                        });
+                      },
+                      color: Theme.of(context).primaryColor,
+                    )
+                  ],
+                );
+              }),
             ),
           )
         ],

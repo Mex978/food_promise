@@ -12,6 +12,7 @@ import '../widgets/make_new_promise_widget.dart';
 
 class HomeController extends GetxController {
   final loading = true.obs;
+  final loadingBottomSheet = false.obs;
   final user = User().obs;
   final _repository = Modular.get<Repository>();
   final _auth = Modular.get<FirebaseAuth>();
@@ -73,6 +74,7 @@ class HomeController extends GetxController {
     final success = await _repository.createPromise(
         target: newPromise['selectedPromiseTarget'],
         type: newPromise['selectedPromiseType'],
+        promiseDate: newPromise['promiseDate'],
         quantity: newPromise['quantity']);
 
     if (success) {
@@ -83,6 +85,18 @@ class HomeController extends GetxController {
       FoodPromiseUtils.foodPromiseDialog(
           'Error', 'Some error ocurred :(', false);
     }
+  }
+
+  Future performPromise(Promise promise) async {
+    loadingBottomSheet.value = true;
+    await _repository.changePromise(promise, performed: true);
+    loadingBottomSheet.value = false;
+  }
+
+  Future cancelPromise(Promise promise) async {
+    loadingBottomSheet.value = true;
+    await _repository.changePromise(promise, cancelled: true);
+    loadingBottomSheet.value = false;
   }
 
   void signOut() {
