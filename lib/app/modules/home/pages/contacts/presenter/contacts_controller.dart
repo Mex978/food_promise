@@ -51,17 +51,21 @@ class ContactsController extends GetxController {
                 ),
                 actions: [
                   FlatButton(
+                      color: Theme.of(context).accentColor,
                       onPressed: () {
                         _repository.addContact(result);
                         contacts.add(result);
                         Navigator.pop(context);
                       },
-                      child: Text('Add')),
+                      child: Text(
+                        'ADD',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      )),
                   FlatButton(
+                      color: Colors.red,
                       onPressed: () => Navigator.pop(context),
                       child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.red),
+                        'CANCEL',
                       ))
                 ],
               ),

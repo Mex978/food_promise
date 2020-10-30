@@ -54,6 +54,7 @@ class Repository {
   Future<bool> createPromise(
       {User target, PromiseType type, int quantity}) async {
     final uid = Modular.get<f_auth.FirebaseAuth>().currentUser.uid;
+    final myName = Modular.get<f_auth.FirebaseAuth>().currentUser.displayName;
     try {
       await client
           .collection('users')
@@ -65,7 +66,7 @@ class Repository {
         'cancelled': false,
         'performed': false,
         'promiseType': type.name,
-        'promisedBy': uid,
+        'promisedBy': myName,
         'destinyUserId': target.name
       }).then((value) async {
         await client

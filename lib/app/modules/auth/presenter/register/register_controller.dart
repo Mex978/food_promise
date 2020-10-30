@@ -112,7 +112,7 @@ class RegisterController extends GetxController {
     }
   }
 
-  void mainFunction() {
+  void register() {
     if (formKey.currentState.validate()) _onSignUpPressed();
   }
 

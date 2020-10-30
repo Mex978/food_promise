@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
-import 'package:food_promise/app/modules/auth/presenter/widgets/sign_in_button_widget.dart';
-import 'package:food_promise/app/modules/auth/presenter/widgets/sing_up_button_widget.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/custom_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -59,14 +58,17 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
                           controller: controller,
                         ),
                         _divider(context, 3),
-                        SignInButton(controller: controller),
-                        // _divider(context, 1),
-                        // SignInWithGoogleButton(),
+                        CustomButton(
+                          onPressed: controller.login,
+                          text: 'SIGN IN',
+                          isLoading: controller.loading.value,
+                          darkColor: true,
+                        ),
                         _divider(context, 1),
-                        SignUpButton(),
-                        // _divider(context, 1),
-                        // SignUpWithGoogleButton(),
-                        // SignUpButton(),
+                        CustomButton(
+                          onPressed: () => Modular.link.pushNamed('/register'),
+                          text: 'SIGN UP',
+                        ),
                       ],
                     ),
                   ),

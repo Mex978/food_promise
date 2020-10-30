@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/auth/presenter/register/register_controller.dart';
-import 'package:food_promise/app/modules/auth/presenter/widgets/sign_up_button_widget.dart';
+import 'package:food_promise/app/modules/auth/presenter/widgets/custom_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -69,7 +69,12 @@ class _RegisterScreenState
                           controller: controller,
                         ),
                         _divider(context, 4),
-                        SignUpButton(controller: controller),
+                        CustomButton(
+                          onPressed: controller.register,
+                          text: 'SIGN UP',
+                          isLoading: controller.loading.value,
+                          darkColor: true,
+                        )
                         // SignUpButton(),
                       ],
                     ),

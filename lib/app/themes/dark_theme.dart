@@ -6,6 +6,8 @@ class DarkTheme {
   static const secondaryColor = Color(0xFF424361);
 
   static final ThemeData theme = ThemeData(
+    backgroundColor: primaryColor,
+    dialogBackgroundColor: primaryColor,
     accentColor: Colors.white,
     primaryColor: primaryColor,
     brightness: Brightness.dark,

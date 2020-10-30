@@ -82,7 +82,7 @@ class LoginController extends GetxController {
     }
   }
 
-  void mainFunction() {
+  void login() {
     if (formKey.currentState.validate()) _onSignInPressed();
   }
 

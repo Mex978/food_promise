@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
-import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
 import 'package:asuka/asuka.dart' as asuka;
+import 'package:food_promise/app/modules/home/pages/contacts/presenter/contacts_controller.dart';
 import 'package:get/get.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/utils.dart';
@@ -15,6 +15,7 @@ class HomeController extends GetxController {
   final user = User().obs;
   final _repository = Modular.get<Repository>();
   final _auth = Modular.get<FirebaseAuth>();
+  final _contactsController = Modular.get<ContactsController>();
 
   final promises = <Promise>[].obs;
 
@@ -23,7 +24,12 @@ class HomeController extends GetxController {
   }
 
   void _init() {
-    getUserInfo().then((_) => loadPromises());
+    getUserInfo().then((_) async {
+      if (!loading.value) loading.value = true;
+      await loadPromises(hasLoader: false);
+      await _contactsController.init();
+      if (loading.value) loading.value = false;
+    });
   }
 
   Future getUserInfo() async {
@@ -40,13 +46,13 @@ class HomeController extends GetxController {
     });
   }
 
-  Future<void> loadPromises() async {
-    if (!loading.value) loading.value = true;
+  Future<void> loadPromises({bool hasLoader = true}) async {
+    if (hasLoader && !loading.value) loading.value = true;
     try {
       final list = await _repository.getPromises();
       promises.clear();
       promises.addAll(list);
-      loading.value = false;
+      if (hasLoader && loading.value) loading.value = false;
     } catch (e) {
       loading.value = false;
       FoodPromiseUtils.foodPromiseDialog('Error', '$e', false);
@@ -77,53 +83,6 @@ class HomeController extends GetxController {
       FoodPromiseUtils.foodPromiseDialog(
           'Error', 'Some error ocurred :(', false);
     }
-  }
-
-  void changePromiseStatus(Promise promise, Function onPerformAction) {
-    asuka.showBottomSheet((context) => Container(
-          color: Colors.white,
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      RaisedButton.icon(
-                        icon: Icon(Icons.check),
-                        label: Text('COMPLETED'),
-                        onPressed: () {
-                          _repository
-                              .changePromise(promise, performed: true)
-                              .then((value) {
-                            onPerformAction();
-                            Navigator.pop(context);
-                          });
-                        },
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      RaisedButton.icon(
-                        icon: Icon(Icons.close),
-                        label: Text('CANCELED'),
-                        onPressed: () {
-                          _repository
-                              .changePromise(promise, cancelled: true)
-                              .then((value) {
-                            onPerformAction();
-                            Navigator.pop(context);
-                          });
-                        },
-                        color: Theme.of(context).primaryColor,
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ));
   }
 
   void signOut() {

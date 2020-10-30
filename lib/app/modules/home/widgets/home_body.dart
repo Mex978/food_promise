@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
+import 'package:food_promise/app/modules/home/widgets/home_bottom_sheet.dart';
 import 'package:get/get.dart';
 
 import 'promise_item_widget.dart';
@@ -44,10 +45,17 @@ class HomeBody extends StatelessWidget {
                       promise: promise,
                       onPressed: () {
                         Future.delayed(
-                          Duration(milliseconds: 200),
-                          () => _controller.changePromiseStatus(
-                              promise, () => _controller.loadPromises()),
-                        );
+                            Duration(milliseconds: 200),
+                            () => showModalBottomSheet(
+                                  context: context,
+                                  isDismissible: true,
+                                  builder: (context) {
+                                    return HomeBottomSheet(
+                                        promise: promise,
+                                        onPerformAction: () =>
+                                            _controller.loadPromises());
+                                  },
+                                ));
                       },
                     ),
                   ))

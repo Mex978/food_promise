@@ -29,6 +29,31 @@ class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
 
   @override
   Widget build(BuildContext context) {
+    if (_contacts == null || _contacts.isEmpty) {
+      return AlertDialog(
+        title: Text(
+          'Error',
+          style: TextStyle(color: Colors.white),
+        ),
+        content: Text('You don\'t have contacts yet'),
+        actions: [
+          FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK')),
+          FlatButton(
+              color: Colors.white,
+              textColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                Navigator.pop(context);
+                Modular.to.pushNamed('/home/contacts');
+              },
+              child: Text('ADD CONTACTS')),
+        ],
+      );
+    }
+
     return Dialog(
       child: SingleChildScrollView(
         child: Padding(
@@ -144,20 +169,25 @@ class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
                   ],
                 ),
               ),
+              SizedBox(height: 15),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
+                      flex: 3,
                       child: FlatButton(
+                          color: Colors.red,
                           onPressed: () {
                             Navigator.pop(context);
                           },
                           child: Text(
                             'CANCEL',
-                            style: TextStyle(color: Colors.red),
                           ))),
+                  Spacer(flex: 1),
                   Expanded(
+                      flex: 3,
                       child: FlatButton(
+                          disabledColor: Colors.grey,
+                          color: Theme.of(context).accentColor,
                           onPressed: (quantity > 0 &&
                                   selectedPromiseTarget != null &&
                                   selectedPromiseType != null)
@@ -170,7 +200,11 @@ class _MakeNewPromiseDialogState extends State<MakeNewPromiseDialog> {
                                   });
                                 }
                               : null,
-                          child: Text('MAKE')))
+                          child: Text(
+                            'MAKE',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          )))
                 ],
               ),
             ],
