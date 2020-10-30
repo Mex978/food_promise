@@ -49,15 +49,7 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
                           ),
                         ),
                         _divider(context, 3),
-                        CustomTextField(
-                          index: 0,
-                          controller: controller,
-                        ),
-                        _divider(context, 2),
-                        CustomTextField(
-                          index: 1,
-                          controller: controller,
-                        ),
+                        ...buildTextFields(),
                         _divider(context, 3),
                         Obx(
                           () => CustomButton(
@@ -88,6 +80,31 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
         ),
       ),
     );
+  }
+
+  List<Widget> buildTextFields() {
+    return controller.inputs
+        .asMap()
+        .map((index, input) {
+          final isLast = controller.inputs.last == input;
+
+          return MapEntry(
+              index,
+              Column(
+                children: [
+                  CustomTextField(
+                    fieldInfo: controller.inputs[index],
+                    nextFieldInfo: index < (controller.inputs.length - 1)
+                        ? controller.inputs[index + 1]
+                        : null,
+                    onSubmit: isLast ? () => controller.login() : null,
+                  ),
+                  isLast ? Container() : _divider(context, 2),
+                ],
+              ));
+        })
+        .values
+        .toList();
   }
 
   Widget _divider(BuildContext context, double factor) => Divider(
