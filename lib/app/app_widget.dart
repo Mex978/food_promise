@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/app_controller.dart';
 import 'package:food_promise/app/shared/utils.dart';
 import 'package:food_promise/app/themes/dark_theme.dart';
+import 'package:get/get.dart';
 
 class FoodPromise extends StatefulWidget {
   @override
@@ -15,14 +14,12 @@ class FoodPromise extends StatefulWidget {
 
 class _FoodPromiseState extends State<FoodPromise> {
   final controller = Modular.get<FoodPromiseController>();
-  StreamSubscription _subscription;
+
   @override
   void initState() {
     super.initState();
 
-    _subscription = controller.isLogged.listen((value) {
-      _subscription.cancel();
-
+    once(controller.isLogged, (value) {
       if (value) {
         Modular.to.pushReplacementNamed('/home');
       } else {

@@ -43,16 +43,22 @@ class HomeDrawer extends StatelessWidget {
           )
         ]
           ..add(Spacer())
-          ..add(ListTile(
-            leading: Icon(Icons.close, color: Theme.of(context).primaryColor),
-            tileColor: Colors.white,
-            title: Text(
-              'Sign Out',
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w900),
+          ..add(Material(
+            color: Colors.white,
+            child: InkWell(
+              onTap: () => Future.delayed(
+                  Duration(milliseconds: 200), () => controller.signOut()),
+              child: ListTile(
+                leading:
+                    Icon(Icons.close, color: Theme.of(context).primaryColor),
+                title: Text(
+                  'Sign Out',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
             ),
-            onTap: () => controller.signOut(),
           )),
       ),
     );

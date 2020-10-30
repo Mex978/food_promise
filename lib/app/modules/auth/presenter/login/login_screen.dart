@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/auth/presenter/login/login_controller.dart';
 import 'package:food_promise/app/modules/auth/presenter/widgets/custom_button_widget.dart';
 import 'package:food_promise/app/shared/widgets/text_field_widget.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -58,16 +59,24 @@ class _LoginScreenState extends ModularState<LoginScreen, LoginController> {
                           controller: controller,
                         ),
                         _divider(context, 3),
-                        CustomButton(
-                          onPressed: controller.login,
-                          text: 'SIGN IN',
-                          isLoading: controller.loading.value,
-                          darkColor: true,
+                        Obx(
+                          () => CustomButton(
+                            onPressed: controller.login,
+                            text: 'SIGN IN',
+                            isLoading: controller.loading.value,
+                            darkColor: true,
+                          ),
                         ),
                         _divider(context, 1),
-                        CustomButton(
-                          onPressed: () => Modular.link.pushNamed('/register'),
-                          text: 'SIGN UP',
+                        Obx(
+                          () => Visibility(
+                            visible: !controller.loading.value,
+                            child: CustomButton(
+                              onPressed: () =>
+                                  Modular.link.pushNamed('/register'),
+                              text: 'SIGN UP',
+                            ),
+                          ),
                         ),
                       ],
                     ),
