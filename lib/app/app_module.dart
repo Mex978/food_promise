@@ -12,10 +12,10 @@ import 'shared/service/repository.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => FirebaseAuth.instance),
-        Bind((i) => FirebaseFirestore.instance),
-        Bind((i) => Repository(client: i())),
-        Bind((i) => FoodPromiseController()),
+        Bind<FirebaseAuth>((i) => FirebaseAuth.instance),
+        Bind<FirebaseFirestore>((i) => FirebaseFirestore.instance),
+        Bind<Repository>((i) => Repository(client: i())),
+        Bind<FoodPromiseController>((i) => FoodPromiseController()),
       ];
 
   @override
