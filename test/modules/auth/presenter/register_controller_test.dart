@@ -1,11 +1,11 @@
+import 'package:asuka/asuka.dart' as asuka;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food_promise/app/modules/auth/presenter/register/register_controller.dart';
 import 'package:mockito/mockito.dart';
-import 'package:asuka/asuka.dart' as asuka;
+
 import '../init_auth_module_helper.dart';
 
 class FirebaseAuthMock extends Mock implements FirebaseAuth {}
@@ -24,11 +24,9 @@ void main() {
     RegisterController controller;
     FirebaseAuthMock auth;
 
-    setUp(() {
-      Firebase.initializeApp();
+    setUp(() async {
       InitAuthModuleHelper().load(changeBinds: [
         Bind<FirebaseAuth>((i) => FirebaseAuthMock()),
-        Bind<FirebaseMock>((i) => FirebaseMock()),
       ]);
 
       controller = Modular.get<RegisterController>();
@@ -98,7 +96,7 @@ void main() {
 
       when(auth.createUserWithEmailAndPassword(
               email: email, password: password))
-          .thenAnswer((_) => throw FirebaseAuthException(
+          .thenAnswer((_) async => throw FirebaseAuthException(
               email: email, code: 'weak-password', message: ''));
 
       final result = await controller.signUpFunction();
