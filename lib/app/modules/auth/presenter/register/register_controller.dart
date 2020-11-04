@@ -66,6 +66,7 @@ class RegisterController extends GetxController {
       if (rePassword == password) {
         final userCredential = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
+
         final uid = userCredential.user.uid;
 
         final repository = Modular.get<Repository>();

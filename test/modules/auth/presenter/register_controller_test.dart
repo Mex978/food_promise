@@ -30,7 +30,7 @@ void main() {
       ]);
 
       controller = Modular.get<RegisterController>();
-      auth = Modular.get<FirebaseAuthMock>();
+      auth = Modular.get<FirebaseAuth>();
       controller.init();
     });
 
@@ -93,6 +93,8 @@ void main() {
 
       final email = 'foodpromise@gmail.com';
       final password = 'somepassword';
+
+      expect(auth, isInstanceOf<FirebaseAuthMock>());
 
       when(auth.createUserWithEmailAndPassword(
               email: email, password: password))

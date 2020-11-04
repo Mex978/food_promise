@@ -34,7 +34,7 @@ class LoginController extends GetxController {
     inputs[1]['controller'] = textEditingControllerPass;
   }
 
-  Future<bool> _signInFunction() async {
+  Future<bool> signInFunction() async {
     loading.value = true;
     final auth = Modular.get<FirebaseAuth>();
 
@@ -71,8 +71,8 @@ class LoginController extends GetxController {
     return false;
   }
 
-  void _onSignInPressed() async {
-    final success = await _signInFunction();
+  void onSignInPressed() async {
+    final success = await signInFunction();
 
     if (success) {
       print('Sign in success');
@@ -83,7 +83,7 @@ class LoginController extends GetxController {
   }
 
   void login() {
-    if (formKey.currentState.validate()) _onSignInPressed();
+    if (formKey.currentState.validate()) onSignInPressed();
   }
 
   void close() {
