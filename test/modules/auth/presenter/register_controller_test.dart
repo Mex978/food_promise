@@ -91,22 +91,59 @@ void main() {
     testWidgets('Should display a error message', (WidgetTester tester) async {
       await tester.pumpWidget(materialWidget());
 
-      final email = 'foodpromise@gmail.com';
-      final password = 'somepassword';
+      const error = 'Error';
+
+      controller.textEditingControllerName.text = 'foodpromise';
+      controller.textEditingControllerEmail.text = 'foodpromise@gmail.com';
+      controller.textEditingControllerPass.text = 'somepassword';
+      controller.textEditingControllerRePass.text = 'somepassword';
 
       expect(auth, isInstanceOf<FirebaseAuthMock>());
 
       when(auth.createUserWithEmailAndPassword(
-              email: email, password: password))
+              email: controller.textEditingControllerEmail.text,
+              password: controller.textEditingControllerPass.text))
           .thenAnswer((_) async => throw FirebaseAuthException(
-              email: email, code: 'weak-password', message: ''));
+              email: controller.textEditingControllerEmail.text,
+              code: 'weak-password',
+              message: ''));
 
-      final result = await controller.signUpFunction();
+      var result = await controller.signUpFunction();
 
       expect(result, false);
       expect(controller.loading.value, false);
       await tester.pump();
-      expect(find.text('The password provided is too weak.'), findsOneWidget);
+      expect(find.text(error), findsOneWidget);
+
+      when(auth.createUserWithEmailAndPassword(
+              email: controller.textEditingControllerEmail.text,
+              password: controller.textEditingControllerPass.text))
+          .thenAnswer((_) async => throw FirebaseAuthException(
+              email: controller.textEditingControllerEmail.text,
+              code: 'email-already-in-use',
+              message: ''));
+
+      result = await controller.signUpFunction();
+
+      expect(result, false);
+      expect(controller.loading.value, false);
+      await tester.pump();
+      expect(find.text(error), findsOneWidget);
+
+      when(auth.createUserWithEmailAndPassword(
+              email: controller.textEditingControllerEmail.text,
+              password: controller.textEditingControllerPass.text))
+          .thenAnswer((_) async => throw FirebaseAuthException(
+              email: controller.textEditingControllerEmail.text,
+              code: 'invalid-email',
+              message: ''));
+
+      result = await controller.signUpFunction();
+
+      expect(result, false);
+      expect(controller.loading.value, false);
+      await tester.pump();
+      expect(find.text(error), findsOneWidget);
     });
   });
 }

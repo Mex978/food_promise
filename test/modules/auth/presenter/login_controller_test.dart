@@ -33,6 +33,8 @@ void main() {
       controller = Modular.get<LoginController>();
       auth = Modular.get<FirebaseAuth>();
       controller.init();
+      controller.textEditingControllerPass.text = 'somepassword';
+      controller.textEditingControllerUser.text = 'foodpromise@gmail.com';
     });
 
     test('Loading should be false when init', () {
@@ -57,11 +59,33 @@ void main() {
       expect(passwordInput['obscure'], true);
     });
 
-    test('Controllers should be disposed', () {
-      controller.close();
+    test('Should return true to result', () async {
+      final result = await controller.signInFunction();
+      expect(controller.loading.value, false);
 
-      expect(controller.textEditingControllerPass, isNull);
-      expect(controller.textEditingControllerUser, isNull);
+      expect(result, true);
+    });
+
+    testWidgets('Shouldn\'t display a error message for weak password',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(materialWidget());
+      const error = 'Error';
+
+      when(auth.signInWithEmailAndPassword(
+              email: controller.textEditingControllerUser.text,
+              password: controller.textEditingControllerPass.text))
+          .thenAnswer((_) => throw FirebaseAuthException(
+              email: controller.textEditingControllerUser.text,
+              code: 'weak-password',
+              message: ''));
+
+      final result = await controller.signInFunction();
+
+      await tester.pump();
+      expect(find.text(error), findsOneWidget);
+      expect(controller.loading.value, false);
+
+      expect(result, false);
     });
   });
 }
