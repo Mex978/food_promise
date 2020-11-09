@@ -53,7 +53,7 @@ class RegisterController extends GetxController {
     inputs[3]['controller'] = textEditingControllerRePass;
   }
 
-  Future<bool> _signUpFunction() async {
+  Future<bool> signUpFunction() async {
     loading.value = true;
     final auth = Modular.get<FirebaseAuth>();
 
@@ -66,6 +66,7 @@ class RegisterController extends GetxController {
       if (rePassword == password) {
         final userCredential = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
+
         final uid = userCredential.user.uid;
 
         final repository = Modular.get<Repository>();
@@ -101,8 +102,8 @@ class RegisterController extends GetxController {
     return false;
   }
 
-  void _onSignUpPressed() async {
-    final success = await _signUpFunction();
+  void onSignUpPressed() async {
+    final success = await signUpFunction();
 
     if (success) {
       print('Sign Up');
@@ -113,7 +114,7 @@ class RegisterController extends GetxController {
   }
 
   void register() {
-    if (formKey.currentState.validate()) _onSignUpPressed();
+    if (formKey.currentState.validate()) onSignUpPressed();
   }
 
   void close() {
