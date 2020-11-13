@@ -30,6 +30,10 @@ dependencies:
   firebase_auth: ^0.18.0+1
   firebase_core: ^0.5.0
   flutter_modular:
+  bloc:
+  flutter_bloc:
+  equatable:
+  dartz:
   fluttertoast: ^7.1.1
   get: 3.15.0
   flutter_custom_dialog:

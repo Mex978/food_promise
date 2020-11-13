@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/user_model.dart';
-import 'package:food_promise/app/modules/home/presenter/home_controller.dart';
+import 'package:food_promise/app/modules/home/presenter/cubit/home_cubit.dart';
 import 'package:food_promise/app/shared/widgets/avatar_widget.dart';
 import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
 import 'package:get/get.dart';
@@ -47,7 +47,7 @@ class ContactsBody extends StatelessWidget {
                     title: Text(user.name),
                     subtitle: Text(user.email),
                     onTap: () async {
-                      await Modular.get<HomeController>()
+                      await Modular.get<HomeCubit>()
                           .makePromise(preSelectedPromiseTarget: user);
                     },
                   ),

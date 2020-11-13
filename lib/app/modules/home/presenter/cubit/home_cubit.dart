@@ -1,62 +1,74 @@
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
+import 'package:asuka/asuka.dart' as asuka;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
-import 'package:asuka/asuka.dart' as asuka;
 import 'package:food_promise/app/modules/home/pages/contacts/presenter/contacts_controller.dart';
-import 'package:get/get.dart';
+import 'package:food_promise/app/modules/home/widgets/make_new_promise_widget.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/utils.dart';
+import 'package:meta/meta.dart';
+import 'package:dartz/dartz.dart';
+import '../../models/user_model.dart';
+part 'home_state.dart';
 
-import '../models/user_model.dart';
-import '../widgets/make_new_promise_widget.dart';
-
-class HomeController extends GetxController {
-  final loading = true.obs;
-  final loadingBottomSheet = false.obs;
-  final user = User().obs;
+class HomeCubit extends Cubit<HomeState> {
   final _repository = Modular.get<Repository>();
   final _auth = Modular.get<FirebaseAuth>();
   final _contactsController = Modular.get<ContactsController>();
 
-  final promises = <Promise>[].obs;
-
-  HomeController() {
+  HomeCubit() : super(HomeInitial()) {
     _init();
   }
 
   void _init() {
-    getUserInfo().then((_) async {
-      if (!loading.value) loading.value = true;
-      await loadPromises(hasLoader: false);
+    getUserInfo().then((tupleUInfo) async {
+      if (state is HomeInitial) emit(HomeLoading());
+
+      final list = await loadPromises(hasLoader: false);
       await _contactsController.init();
-      if (loading.value) loading.value = false;
+
+      if (list != null && state is HomeLoading) {
+        emit(HomeLoaded(
+            user: User(
+                uid: tupleUInfo.value1,
+                email: tupleUInfo.value2,
+                name: tupleUInfo.value3),
+            promises: list));
+      }
     });
   }
 
-  Future getUserInfo() async {
+  Future<Tuple3<String, String, String>> getUserInfo() async {
     final newUid = _auth.currentUser.uid;
     final newEmail = _auth.currentUser.email;
     final userData =
         await _repository.client.collection('users').doc(newUid).get();
-    final newName = userData.data()['name'];
+    final String newName = userData.data()['name'];
 
-    user.update((user) {
-      user.uid = newUid;
-      user.name = newName;
-      user.email = newEmail;
-    });
+    return Tuple3(newUid, newEmail, newName);
   }
 
-  Future<void> loadPromises({bool hasLoader = true}) async {
-    if (hasLoader && !loading.value) loading.value = true;
+  Future<List<Promise>> loadPromises({bool hasLoader = true}) async {
+    if (hasLoader && !(state is HomeLoading)) emit(HomeLoading());
     try {
-      final list = await _repository.getPromises();
-      promises.clear();
-      promises.addAll(list);
-      if (hasLoader && loading.value) loading.value = false;
+      return await _repository.getPromises();
     } catch (e) {
-      loading.value = false;
+      emit(HomeError(e));
       FoodPromiseUtils.foodPromiseDialog('Error', '$e', false);
+      return null;
+    }
+  }
+
+  Future reloadPromises() async {
+    final loadedState = (state as HomeLoaded);
+    final user = loadedState.user;
+
+    final list = await loadPromises();
+
+    if (list != null && state is HomeLoading) {
+      emit(HomeLoaded(user: user, promises: list));
     }
   }
 
@@ -88,15 +100,27 @@ class HomeController extends GetxController {
   }
 
   Future performPromise(Promise promise) async {
-    loadingBottomSheet.value = true;
+    final loadedState = (state as HomeLoaded);
+    final user = loadedState.user;
+    final promises = loadedState.promises;
+
+    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: true));
+// TODO check if we shouldn't save the returned value
     await _repository.changePromise(promise, performed: true);
-    loadingBottomSheet.value = false;
+
+    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: false));
   }
 
   Future cancelPromise(Promise promise) async {
-    loadingBottomSheet.value = true;
+    final loadedState = (state as HomeLoaded);
+    final user = loadedState.user;
+    final promises = loadedState.promises;
+
+    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: true));
+
     await _repository.changePromise(promise, cancelled: true);
-    loadingBottomSheet.value = false;
+
+    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: false));
   }
 
   void signOut() {
