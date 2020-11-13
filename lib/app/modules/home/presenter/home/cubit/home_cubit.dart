@@ -29,6 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
       final list = await loadPromises(hasLoader: false);
       await _contactsController.init();
 
+// TODO should handle error state here (user loaded but fails to get promises)
       if (list != null && state is HomeLoading) {
         emit(HomeLoaded(
             user: User(
