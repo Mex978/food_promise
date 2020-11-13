@@ -1,10 +1,9 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/home/pages/contacts/presenter/contacts_screen.dart';
-import 'package:food_promise/app/modules/home/presenter/cubit/home_cubit.dart';
-import 'package:food_promise/app/modules/home/presenter/home_screen.dart';
+import 'package:food_promise/app/modules/home/presenter/home/home_screen.dart';
 
-import 'pages/contacts/presenter/contacts_controller.dart';
-import 'pages/contacts/presenter/contacts_screen.dart';
+import 'presenter/contacts/contacts_controller.dart';
+import 'presenter/contacts/contacts_screen.dart';
+import 'presenter/home/cubit/home_cubit.dart';
 
 class HomeModule extends ChildModule {
   @override

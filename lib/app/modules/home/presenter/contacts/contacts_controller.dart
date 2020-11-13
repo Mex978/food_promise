@@ -5,8 +5,8 @@ import 'package:food_promise/app/shared/utils.dart';
 import 'package:get/get.dart';
 import 'package:asuka/asuka.dart' as asuka;
 
-import '../../../models/user_model.dart';
-import '../widgets/contacts_search.dart';
+import '../../models/user_model.dart';
+import 'widgets/contacts_search.dart';
 
 class ContactsController extends GetxController {
   final _repository = Modular.get<Repository>();

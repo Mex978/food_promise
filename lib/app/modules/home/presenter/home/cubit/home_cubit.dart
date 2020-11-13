@@ -4,13 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth;
 import 'package:asuka/asuka.dart' as asuka;
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/promise_model.dart';
-import 'package:food_promise/app/modules/home/pages/contacts/presenter/contacts_controller.dart';
+import 'package:food_promise/app/modules/home/models/user_model.dart';
+import 'package:food_promise/app/modules/home/presenter/contacts/contacts_controller.dart';
 import 'package:food_promise/app/modules/home/widgets/make_new_promise_widget.dart';
 import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/utils.dart';
 import 'package:meta/meta.dart';
 import 'package:dartz/dartz.dart';
-import '../../models/user_model.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -51,11 +51,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<List<Promise>> loadPromises({bool hasLoader = true}) async {
-    if (hasLoader && !(state is HomeLoading)) emit(HomeLoading());
+    emit(HomeLoading());
     try {
       return await _repository.getPromises();
     } catch (e) {
-      emit(HomeError(e));
       FoodPromiseUtils.foodPromiseDialog('Error', '$e', false);
       return null;
     }
@@ -64,12 +63,11 @@ class HomeCubit extends Cubit<HomeState> {
   Future reloadPromises() async {
     final loadedState = (state as HomeLoaded);
     final user = loadedState.user;
+    final promises = loadedState.promises;
 
     final list = await loadPromises();
 
-    if (list != null && state is HomeLoading) {
-      emit(HomeLoaded(user: user, promises: list));
-    }
+    emit(HomeLoaded(user: user, promises: list ?? promises));
   }
 
   void makePromise({User preSelectedPromiseTarget}) async {
@@ -92,7 +90,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (success) {
       FoodPromiseUtils.foodPromiseDialog(
           'Success', 'Promise created with success!', true);
-      await loadPromises();
+      await reloadPromises();
     } else {
       FoodPromiseUtils.foodPromiseDialog(
           'Error', 'Some error ocurred :(', false);

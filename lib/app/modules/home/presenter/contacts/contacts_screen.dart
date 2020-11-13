@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'contacts_controller.dart';
-import '../widgets/contacts_app_bar.dart';
-import '../widgets/contacts_body.dart';
+import 'widgets/contacts_app_bar.dart';
+import 'widgets/contacts_body.dart';
 
 class ContactsScreen extends StatefulWidget {
   @override

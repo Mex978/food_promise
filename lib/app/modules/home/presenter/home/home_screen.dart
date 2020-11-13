@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/home/presenter/cubit/home_cubit.dart';
 import 'package:food_promise/app/modules/home/widgets/home_body.dart';
 import 'package:food_promise/app/modules/home/widgets/home_drawer.dart';
 import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
+
+import 'cubit/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   final _cubit = Modular.get<HomeCubit>();

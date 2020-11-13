@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:food_promise/app/modules/home/presenter/cubit/home_cubit.dart';
+import 'package:food_promise/app/modules/home/presenter/home/cubit/home_cubit.dart';
 import 'package:food_promise/app/shared/widgets/avatar_widget.dart';
 
 class HomeDrawer extends StatelessWidget {

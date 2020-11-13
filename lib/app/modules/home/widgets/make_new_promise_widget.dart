@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:food_promise/app/modules/home/presenter/contacts/contacts_controller.dart';
 import 'package:food_promise/app/shared/utils.dart';
 
 import '../enums.dart';
-import '../pages/contacts/presenter/contacts_controller.dart';
 import '../models/user_model.dart';
 
 class MakeNewPromiseDialog extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/models/user_model.dart';
-import 'package:food_promise/app/modules/home/presenter/cubit/home_cubit.dart';
+import 'package:food_promise/app/modules/home/presenter/home/cubit/home_cubit.dart';
 import 'package:food_promise/app/shared/widgets/avatar_widget.dart';
 import 'package:food_promise/app/shared/widgets/simple_loader_widget.dart';
 import 'package:get/get.dart';
 
-import '../presenter/contacts_controller.dart';
+import '../contacts_controller.dart';
 
 class ContactsBody extends StatelessWidget {
   final _controller = Modular.get<ContactsController>();
