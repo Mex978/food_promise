@@ -3,38 +3,46 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:food_promise/app/modules/home/presenter/home/cubit/home_cubit.dart';
 import 'package:food_promise/app/shared/widgets/avatar_widget.dart';
+import 'package:sealed_flutter_bloc/sealed_flutter_bloc.dart';
 
 class HomeDrawer extends StatelessWidget {
   final _cubit = Modular.get<HomeCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => Modular.get<HomeCubit>(),
-      child: Drawer(
-        child: Column(
+    return Drawer(
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             DrawerHeader(
               child: Column(
                 children: [
-                  BlocBuilder<HomeCubit, HomeState>(
-                    builder: (context, state) {
-                      if (state is HomeLoaded) {
-                        final imageUrl = state.user.imageUrl;
+                  SealedBlocBuilder4<HomeCubit, HomeState, HomeInitial,
+                      HomeLoading, HomeLoaded, HomeError>(
+                    cubit: _cubit,
+                    builder: (context, states) => states(
+                      (initial) => Container(),
+                      (loading) => Container(),
+                      (loaded) {
+                        final imageUrl = loaded.user.imageUrl;
 
                         return AvatarWidget(
-                          name: state.user.name,
+                          name: loaded.user.name,
                           imageUrl: imageUrl,
                         );
-                      }
-                      return Container();
-                    },
+                      },
+                      (error) => Container(),
+                    ),
                   ),
                   Spacer(),
-                  BlocBuilder<HomeCubit, HomeState>(
-                    builder: (context, state) =>
-                        Text(state is HomeLoaded ? state.user.name : ''),
+                  SealedBlocBuilder4<HomeCubit, HomeState, HomeInitial,
+                      HomeLoading, HomeLoaded, HomeError>(
+                    cubit: _cubit,
+                    builder: (context, states) => states(
+                        (initial) => Container(),
+                        (loading) => Container(),
+                        (loaded) => Text(loaded.user.name),
+                        (error) => Container()),
                   ),
                   Spacer(),
                 ],
@@ -43,35 +51,7 @@ class HomeDrawer extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                Modular.to.pushNamed('/home/contacts');
-              },
-              leading: Icon(Icons.people),
-              title: Text('Contacts'),
-            )
-          ]
-            ..add(Spacer())
-            ..add(Material(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () => Future.delayed(
-                    Duration(milliseconds: 200), () => _cubit.signOut()),
-                child: ListTile(
-                  leading:
-                      Icon(Icons.close, color: Theme.of(context).primaryColor),
-                  title: Text(
-                    'Sign Out',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w900),
-                  ),
-                ),
-              ),
-            )),
-        ),
-      ),
+          ]),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:food_promise/app/shared/service/repository.dart';
 import 'package:food_promise/app/shared/utils.dart';
 import 'package:meta/meta.dart';
 import 'package:dartz/dartz.dart';
+import 'package:sealed_flutter_bloc/sealed_flutter_bloc.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -18,20 +19,21 @@ class HomeCubit extends Cubit<HomeState> {
   final _auth = Modular.get<FirebaseAuth>();
   final _contactsController = Modular.get<ContactsController>();
 
-  HomeCubit() : super(HomeInitial()) {
+  HomeCubit() : super(HomeState.initial()) {
+    print('-->Criou HomeCubit<--');
     _init();
   }
 
   void _init() {
     getUserInfo().then((tupleUInfo) async {
-      if (state is HomeInitial) emit(HomeLoading());
+      if (state is HomeInitial) emit(HomeState.loading());
 
-      final list = await loadPromises(hasLoader: false);
+      final list = await loadPromises();
       await _contactsController.init();
 
 // TODO should handle error state here (user loaded but fails to get promises)
       if (list != null && state is HomeLoading) {
-        emit(HomeLoaded(
+        emit(HomeState.success(
             user: User(
                 uid: tupleUInfo.value1,
                 email: tupleUInfo.value2,
@@ -51,8 +53,8 @@ class HomeCubit extends Cubit<HomeState> {
     return Tuple3(newUid, newEmail, newName);
   }
 
-  Future<List<Promise>> loadPromises({bool hasLoader = true}) async {
-    emit(HomeLoading());
+  Future<List<Promise>> loadPromises() async {
+    emit(HomeState.loading());
     try {
       return await _repository.getPromises();
     } catch (e) {
@@ -61,14 +63,21 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future reloadPromises() async {
-    final loadedState = (state as HomeLoaded);
-    final user = loadedState.user;
-    final promises = loadedState.promises;
+  Future reloadPromises({List<Promise> promisesLoaded, User userLoaded}) async {
+    User user;
+    List<Promise> promises;
+
+    if (!(state is HomeLoading)) {
+      final loadedState = (state as HomeLoaded);
+      user = loadedState.user;
+      promises = loadedState.promises;
+    }
 
     final list = await loadPromises();
 
-    emit(HomeLoaded(user: user, promises: list ?? promises));
+    emit(HomeState.success(
+        user: user ?? userLoaded,
+        promises: list ?? promises ?? promisesLoaded));
   }
 
   void makePromise({User preSelectedPromiseTarget}) async {
@@ -82,6 +91,12 @@ class HomeCubit extends Cubit<HomeState> {
       return;
     }
 
+    final loadedState = (state as HomeLoaded);
+    final user = loadedState.user;
+    final promises = loadedState.promises;
+
+    emit(HomeState.loading());
+
     final success = await _repository.createPromise(
         target: newPromise['selectedPromiseTarget'],
         type: newPromise['selectedPromiseType'],
@@ -91,7 +106,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (success) {
       FoodPromiseUtils.foodPromiseDialog(
           'Success', 'Promise created with success!', true);
-      await reloadPromises();
+      await reloadPromises(userLoaded: user, promisesLoaded: promises);
     } else {
       FoodPromiseUtils.foodPromiseDialog(
           'Error', 'Some error ocurred :(', false);
@@ -103,11 +118,13 @@ class HomeCubit extends Cubit<HomeState> {
     final user = loadedState.user;
     final promises = loadedState.promises;
 
-    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: true));
+    emit(HomeState.success(
+        user: user, promises: promises, loadingBottomSheet: true));
 // TODO check if we shouldn't save the returned value
     await _repository.changePromise(promise, performed: true);
 
-    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: false));
+    emit(HomeState.success(
+        user: user, promises: promises, loadingBottomSheet: false));
   }
 
   Future cancelPromise(Promise promise) async {
@@ -115,11 +132,11 @@ class HomeCubit extends Cubit<HomeState> {
     final user = loadedState.user;
     final promises = loadedState.promises;
 
-    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: true));
+    emit(HomeState.success(user: user, promises: promises, loadingBottomSheet: true));
 
     await _repository.changePromise(promise, cancelled: true);
 
-    emit(HomeLoaded(user: user, promises: promises, loadingBottomSheet: false));
+    emit(HomeState.success(user: user, promises: promises, loadingBottomSheet: false));
   }
 
   void signOut() {

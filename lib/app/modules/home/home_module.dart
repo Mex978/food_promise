@@ -9,7 +9,7 @@ class HomeModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => ContactsController()),
-        Bind((i) => HomeCubit(), singleton: false),
+        Bind((i) => HomeCubit()),
       ];
 
   @override
